@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git://github.com/KevinGrandon/autolander.git"
   },
-  "author": "James Lal[:lightsofapollo]",
+  "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL",
   "bugs": {
     "url": "https://github.com/KevinGrandon/autolander/issues"
@@ -23,5 +23,6 @@
     "sinon": "~1.10.3"
   },
   "dependencies": {
+    "koa": "0.11.0"
   }
 }
