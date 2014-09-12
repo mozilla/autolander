@@ -33,7 +33,7 @@ module.exports = function(runtime) {
     }
     bugId = bugId[1];
 
-    //yield bugzilla.attachIfNeeded();
+    yield bugzilla.attachPullRequest(runtime, bugId, body);
     //yield github.commentOnPull();
 
     // Everything was ok.
