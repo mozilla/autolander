@@ -1,0 +1,27 @@
+{
+  "name": "autolander",
+  "version": "0.0.0",
+  "description": "autolander ================",
+  "main": "index.js",
+  "bin": {
+    "autolander": "./bin/autolander"
+  },
+  "scripts": {
+    "test": "make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/KevinGrandon/autolander.git"
+  },
+  "author": "James Lal[:lightsofapollo]",
+  "license": "MPL",
+  "bugs": {
+    "url": "https://github.com/KevinGrandon/autolander/issues"
+  },
+  "devDependencies": {
+    "mocha": "~1.21.4",
+    "sinon": "~1.10.3"
+  },
+  "dependencies": {
+  }
+}
