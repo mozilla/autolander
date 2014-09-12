@@ -3,9 +3,6 @@
   "version": "0.0.0",
   "description": "autolander ================",
   "main": "index.js",
-  "bin": {
-    "autolander": "./bin/autolander"
-  },
   "scripts": {
     "test": "make"
   },
@@ -23,6 +20,10 @@
     "sinon": "~1.10.3"
   },
   "dependencies": {
-    "koa": "0.11.0"
+    "koa": "0.11.0",
+    "koa-body-parser": "^1.0.0",
+    "koa-trie-router": "^1.0.8",
+    "co": "^3.1.0",
+    "commander": "^2.3.0"
   }
 }
