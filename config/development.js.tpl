@@ -6,7 +6,7 @@ module.exports = {
     username: 'bugs@bugmail.com',
     password: ''
   },
-  bugsfeedConfig: {
-    url: 'ws://bugzfeed.mozilla.org/'
+  bugzfeedConfig: {
+    url: 'amqp://user:pass@pulse.mozilla.org'
   }
 }
