@@ -5,5 +5,8 @@ module.exports = {
     url: "https://bugzilla.mozilla.org/rest/",
     username: 'bugs@bugmail.com',
     password: ''
+  },
+  bugsfeedConfig: {
+    url: 'ws://bugzfeed.mozilla.org/'
   }
 }

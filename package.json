@@ -27,6 +27,7 @@
     "commander": "^2.3.0",
     "node-github": "0.0.3",
     "thunkify": "^2.1.2",
-    "bz": "^1.0.0-alpha.5"
+    "bz": "^1.0.0-alpha.5",
+    "ws": "^0.4.32"
   }
 }
