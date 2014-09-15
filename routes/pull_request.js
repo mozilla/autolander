@@ -1,5 +1,5 @@
 var bugzilla = require('../lib/bugzilla');
-var bugzfeed = require('../lib/bugzfeed');
+var pulse = require('../lib/pulse');
 var github = require('../lib/github');
 
 module.exports = function(runtime) {
@@ -34,7 +34,7 @@ module.exports = function(runtime) {
     bugId = bugId[1];
 
     yield bugzilla.attachPullRequest(runtime, bugId, body);
-    yield bugzfeed.subscribe(runtime, bugId, body);
+    yield pulse.subscribe(runtime, bugId, body);
 
     // Everything was ok.
     this.status = 200;

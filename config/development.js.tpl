@@ -6,7 +6,7 @@ module.exports = {
     username: 'bugs@bugmail.com',
     password: ''
   },
-  bugzfeedConfig: {
+  pulseConfig: {
     url: 'amqp://user:pass@pulse.mozilla.org',
     queueName: 'bugzfeed-name',
     exchange: 'exchange/bugzilla/simple'
