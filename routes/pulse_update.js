@@ -8,6 +8,14 @@ var github = require('../lib/github');
  */
 module.exports = function(runtime) {
   return function * (pulse) {
-    console.log('Got pulse:', pulse)
+    var bugId = pulse.id;
+
+    var isSubscribed = yield runtime.pulseApi.isSubscribed(runtime, bugId);
+    if (!isSubscribed) {
+      return;
+    }
+
+    console.log('Got pulse bug update for:', bugId);
+    yield bugzilla.processAttachments(runtime, bugId);
   };
 };
