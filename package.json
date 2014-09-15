@@ -24,6 +24,8 @@
     "koa-body-parser": "^1.0.0",
     "koa-trie-router": "^1.0.8",
     "co": "^3.1.0",
-    "commander": "^2.3.0"
+    "commander": "^2.3.0",
+    "node-github": "0.0.3",
+    "thunkify": "^2.1.2"
   }
 }
