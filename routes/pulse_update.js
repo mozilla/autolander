@@ -1,4 +1,5 @@
 var bugzilla = require('../lib/bugzilla');
+var debug = require('debug')('autolander:route:pulse_update');
 var github = require('../lib/github');
 
 /**
@@ -15,7 +16,7 @@ module.exports = function(runtime) {
       return;
     }
 
-    console.log('Got pulse bug update for:', bugId);
+    debug('route', 'bug ' + bugId);
     yield bugzilla.processAttachments(runtime, bugId);
   };
 };
