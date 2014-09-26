@@ -16,3 +16,8 @@ Start the server.
 ```
 node ./bin/app
 ```
+
+## TODO
+* Handle when a github merge fails.
+* Store bugs we're interested in somewhere so we don't have to process *every* bug.
+* Write end-to-end integration tets.
