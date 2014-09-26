@@ -25,6 +25,9 @@ node ./bin/app
 
 // Or start with debug logging:
 DEBUG=* node ./bin/app
+
+// Start for production and debugging
+DEBUG=* node ./bin/app production
 ```
 
 ## TODO
