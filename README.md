@@ -27,7 +27,7 @@ node ./bin/app
 ## TODO
 * Handle when a github merge fails - we should comment on the pull request that we could not merge it and remove the checkin-needed flag.
 * Store bugs we're interested in somewhere so we don't have to process *every* bug.
-* Write end-to-end integration tets.
+* Write end-to-end integration tests.
 * Update bug comments with full merge path.
 * Verify and write tests for multiple pull request attachments.
 * Verify that autolander does not get confused with non pull-request attachments.
