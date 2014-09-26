@@ -22,6 +22,9 @@ cp config/development.js.tpl config/production.js
 Start the server.
 ```
 node ./bin/app
+
+// Or start with debug logging:
+DEBUG=* node ./bin/app
 ```
 
 ## TODO
