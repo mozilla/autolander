@@ -1,5 +1,4 @@
 var bugzilla = require('../lib/bugzilla');
-var commitChecker = require('../lib/commit_checker');
 var github = require('../lib/github');
 
 module.exports = function(runtime) {
@@ -33,8 +32,8 @@ module.exports = function(runtime) {
     }
     bugId = bugId[1];
 
-    //yield bugzilla.attachIfNeeded();
-    //yield github.commentOnPull();
+    yield bugzilla.attachPullRequest(runtime, bugId, body);
+    yield runtime.pulseApi.subscribe(runtime, bugId, body);
 
     // Everything was ok.
     this.status = 200;

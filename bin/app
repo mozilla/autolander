@@ -1,6 +1,7 @@
 #! /usr/bin/env node --harmony
 
 var co = require('co');
+var debug = require('debug')('autolander:app');
 var appFactory = require('../lib/app');
 var program = require('commander');
 
@@ -13,7 +14,7 @@ co(function* () {
 	var config = require('../config/' + profile);
 	var app = yield appFactory(config);
 	var server = yield app.listen.bind(app, config.port);
-	console.log('server listen', { port: config.port });
+	debug('listen', { port: config.port });
 })(function(err) {
 	if (err) throw err;
 });
