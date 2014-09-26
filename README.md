@@ -12,6 +12,13 @@ Using ngrok for a tunnel to localhost is the easiest way to develop. Fork your r
 ./ngrok 80
 ```
 
+Create configuration if needed. Copy the template config file to the environment (development/production), and fill in the keys. Ask me if you need development keys.
+```
+cp config/development.js.tpl config/development.js
+// Or, if testing/running in production:
+cp config/development.js.tpl config/production.js
+```
+
 Start the server.
 ```
 node ./bin/app
