@@ -16,5 +16,8 @@ co(function* () {
 	var server = yield app.listen.bind(app, config.port);
 	debug('listen', { port: config.port });
 })(function(err) {
-	if (err) throw err;
+	if (err) {
+		debug('error', err)
+		throw err;
+	}
 });
