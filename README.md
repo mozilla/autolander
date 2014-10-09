@@ -24,10 +24,10 @@ Start the server.
 node ./bin/app
 
 // Or start with debug logging:
-DEBUG=* node ./bin/app
+DEBUG=* node --harmony ./bin/app
 
 // Start for production and debugging
-DEBUG=* node ./bin/app production
+DEBUG=* node --harmony ./bin/app production
 ```
 
 ## TODO
