@@ -1,5 +1,10 @@
 module.exports = {
   port: process.env.port || 80,
+  azureConfig: {
+    accountUrl: 'http://accountName.table.core.windows.net/',
+    accountName: 'accountName',
+    accountKey: 'theKey'
+  },
   githubConfig: {
     token: '<yourtokenhere>'
   },

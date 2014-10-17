@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "amqplib": "^0.2.1",
+    "azure-table-node": "^1.4.1",
     "bz": "^1.0.0-alpha.5",
     "co": "^3.1.0",
     "commander": "^2.3.0",

@@ -9,12 +9,15 @@ program.usage('./bin/server [options] <profile>');
 program.parse(process.argv);
 
 co(function* () {
-	var profile = program.args[0];
-	profile = profile || 'development';
-	var config = require('../config/' + profile);
-	var app = yield appFactory(config);
-	var server = yield app.listen.bind(app, config.port);
-	debug('listen', { port: config.port });
+  var profile = program.args[0];
+  profile = profile || 'development';
+  var config = require('../config/' + profile);
+  var app = yield appFactory(config);
+  var server = yield app.listen.bind(app, config.port);
+  debug('listen', { port: config.port });
 })(function(err) {
-	if (err) throw err;
+  if (err) {
+    debug('error', err)
+    throw err;
+  }
 });
