@@ -17,6 +17,20 @@ module.exports = function(runtime) {
     }
 
     debug('route', 'bug ' + bugId);
-    yield bugzilla.processAttachments(runtime, bugId);
+
+    // Create the integration branch if needed.
+    var pulls = yield bugzilla.getActivePullsForBug(runtime, bugId)
+
+    if (!pulls.length) {
+      debug('nothing to process');
+      return;
+    }
+
+    for (var i = 0, iLen = pulls.length; i < iLen; i++) {
+      yield bugzilla.mergePullRequest(runtime, bugId, pulls[i]);
+    }
+
+    // Unsubscribe from the bug.
+    yield runtime.pulseApi.unsubscribe(runtime, bugId);
   };
 };
