@@ -29,10 +29,10 @@ module.exports = function(runtime) {
     for (var i = 0, iLen = pulls.length; i < iLen; i++) {
       var pull = pulls[i];
       yield github.integratePullRequest(runtime, pull);
-      yield bugzilla.mergePullRequest(runtime, bugId, pull);
     }
 
     // Unsubscribe from the bug.
-    yield runtime.pulseApi.unsubscribe(runtime, bugId);
+    // XXX: Commented out for testing.
+    // yield runtime.pulseApi.unsubscribe(runtime, bugId);
   };
 };
