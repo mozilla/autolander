@@ -25,11 +25,17 @@
     "bz": "^1.0.0-alpha.5",
     "co": "^3.1.0",
     "commander": "^2.3.0",
+    "deap": "^1.0.0",
     "debug": "^2.0.0",
     "github": "^0.2.2",
     "koa": "0.11.0",
     "koa-body-parser": "^1.0.0",
     "koa-trie-router": "^1.0.8",
-    "thunkify": "^2.1.2"
+    "mozilla-treeherder": "^0.4.2",
+    "taskcluster-client": "^0.17.6",
+    "taskcluster-task-factory": "^0.6.4",
+    "thunkify": "^2.1.2",
+    "json-templater": "^1.0.1",
+    "slugid": "^1.0.3"
   }
 }

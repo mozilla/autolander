@@ -17,5 +17,16 @@ module.exports = {
     url: 'amqp://user:pass@pulse.mozilla.org',
     queueName: 'bugzfeed-name',
     exchange: 'exchange/bugzilla/simple'
+  },
+  taskclusterConfig: {
+    name: '',
+    clientId: '',
+    accessToken: ''
+  },
+  treeherderConfig: {
+    name: '',
+    baseUrl: 'https://treeherder.mozilla.org/api/',
+    consumerKey: '',
+    consumerSecret: ''
   }
 }
