@@ -32,7 +32,7 @@
     "koa-body-parser": "^1.0.0",
     "koa-trie-router": "^1.0.8",
     "mozilla-treeherder": "^0.4.2",
-    "taskcluster-client": "^0.17.6",
+    "taskcluster-client": "^0.17.7",
     "taskcluster-task-factory": "^0.6.4",
     "thunkify": "^2.1.2",
     "json-templater": "^1.0.1",

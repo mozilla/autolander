@@ -36,3 +36,9 @@ DEBUG=* node --harmony ./bin/app production
 * Write end-to-end integration tests.
 * Verify and write tests for multiple pull request attachments.
 * Verify that autolander does not get confused with non pull-request attachments.
+* Tests needed for:
+** Invalid pull request name.
+** Successful pull request with repo which does not contain a taskgraph.
+** Un-mergeable pull request.
+** Successful pull request with repo which contains taskgraph.
+** Failed CI pull request with repo which contains taskgraph.

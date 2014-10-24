@@ -23,6 +23,10 @@ module.exports = {
     clientId: '',
     accessToken: ''
   },
+  taskPulseConfig: {
+    user: '',
+    password: ''
+  },
   treeherderConfig: {
     name: '',
     baseUrl: 'https://treeherder.mozilla.org/api/',
