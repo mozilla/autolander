@@ -28,7 +28,7 @@ module.exports = function(runtime) {
 
     for (var i = 0, iLen = pulls.length; i < iLen; i++) {
       var pull = pulls[i];
-      yield github.integratePullRequest(runtime, pull);
+      yield github.integratePullRequest(runtime, bugId, pull);
     }
 
     // Unsubscribe from the bug.

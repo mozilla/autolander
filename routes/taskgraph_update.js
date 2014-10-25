@@ -27,11 +27,12 @@ module.exports = function(runtime) {
     var revisionInfo = JSON.parse(taskInfo.tags.revisions);
     var pullInfo = JSON.parse(taskInfo.tags.pull);
     var params = JSON.parse(taskInfo.tags.params);
+    var bugId = taskInfo.tags.bugId;
 
     switch (detail.payload.status.state) {
       case 'running':
         debug('task is running');
-        break;
+        //break;
       case 'finished':
         // Fast-forward the base branch if the run is successful.
         try {
@@ -46,6 +47,9 @@ module.exports = function(runtime) {
         } catch(e) {
           debug('error updating ref', e);
         }
+
+        var commitUrl = 'https://github.com/' + params.githubBaseUser + '/' + params.githubBaseRepo + '/commit/' + params.githubHeadRevision;
+        yield runtime.bugzilla.addLandingComment(runtime, bugId, commitUrl);
         break;
       case 'blocked':
         // Re-create the integration branch on a failure, without the failed commit.
