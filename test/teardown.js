@@ -1,11 +1,9 @@
-#! /usr/bin/env node --harmony
-
 console.log('Test Teardown.');
 
-var co = require('co');
 var deleteRepo = require('./support/delete_repo');
 
-co(function* () {
+module.exports = function *(runtime) {
   var runtime = yield require('./support/runtime')();
-  yield deleteRepo(runtime, 'autolander');
-})();
+  // Commented out for now for testing.
+  //yield deleteRepo(runtime, 'autolander');
+};

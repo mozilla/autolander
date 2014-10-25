@@ -1,5 +1,3 @@
-#! /usr/bin/env node --harmony
-
 console.log('Test Setup.');
 
 var childProcess = require('child_process');
@@ -16,7 +14,7 @@ function getTunnelUrl() {
     });
     ngrok.on('message', function(m) {
       console.log('Url is:', m.url);
-      fn(m.url);
+      fn(null, m.url);
     });
     ngrok.on('exit', function(data) {
       console.log('ngrok exit ' + data);
@@ -30,8 +28,7 @@ function getTunnelUrl() {
   };
 }
 
-co(function * () {
-  var runtime = yield require('./support/runtime')();
+module.exports = function *(runtime) {
 
   // Try to start from a clean slate.
   // Delete the repo if it exists.
@@ -40,10 +37,8 @@ co(function * () {
   } catch(e) {}
 
   yield createRepo(runtime, 'autolander');
-
-  var thunkTunnelUrl = thunkify(getTunnelUrl);
+  var thunkTunnelUrl = thunkify(getTunnelUrl());
   var tunnelUrl = yield thunkTunnelUrl();
-  console.log('Tunnel url is:', tunnelUrl);
 
   var createHook = thunkify(runtime.githubApi.repos.createHook.bind(runtime.githubApi.repos));
   var hookReq = yield createHook({
@@ -63,9 +58,4 @@ co(function * () {
   });
 
   console.log('Hook req is:', hookReq);
-})(function(err) {
-  if (err) {
-    console.log('error', err)
-    throw err;
-  }
-});
+};

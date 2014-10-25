@@ -34,6 +34,7 @@
     "koa-trie-router": "^1.0.8",
     "mozilla-treeherder": "^0.4.2",
     "ngrok": "^0.1.98",
+    "promise": "~4.0.0",
     "slugid": "^1.0.3",
     "taskcluster-client": "^0.17.7",
     "taskcluster-task-factory": "^0.6.4",
