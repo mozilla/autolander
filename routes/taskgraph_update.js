@@ -1,6 +1,7 @@
 var bugzilla = require('../lib/bugzilla');
 var debug = require('debug')('autolander:route:taskgraph_update');
 var github = require('../lib/github');
+var thunkify = require('thunkify');
 
 var Scheduler = require('taskcluster-client').Scheduler;
 
@@ -23,20 +24,31 @@ module.exports = function(runtime) {
     var taskInfo = yield scheduler.info(detail.payload.status.taskGraphId);
     debug('scheduler info', taskInfo);
 
-    var revisionInfo = JSON.stringify(taskInfo.tags.revisions);
-    var pullInfo = JSON.stringify(taskInfo.tags.pull);
-    var params = JSON.stringify(taskInfo.tags.params);
+    var revisionInfo = JSON.parse(taskInfo.tags.revisions);
+    var pullInfo = JSON.parse(taskInfo.tags.pull);
+    var params = JSON.parse(taskInfo.tags.params);
 
-    switch(detail.payload.status.state) {
+    switch (detail.payload.status.state) {
       case 'running':
-        // TODO: Comment on pull request that we are running this.
+        debug('task is running');
         break;
       case 'finished':
-        // TODO: Fast-forward the master ref.
-        // params.githubHeadRevision
+        // Fast-forward the base branch if the run is successful.
+        try {
+          var updateRef = thunkify(runtime.githubApi.gitdata.updateReference.bind(runtime.githubApi.gitdata));
+          var ref = yield updateRef({
+            user: params.githubBaseUser,
+            repo: params.githubBaseRepo,
+            ref: 'heads/' + params.githubBaseBranch,
+            sha: params.githubHeadRevision,
+            token: runtime.config.githubConfig.token
+          });
+        } catch(e) {
+          debug('error updating ref', e);
+        }
         break;
       case 'blocked':
-        // TODO: Crazy things.
+        // Re-create the integration branch on a failure, without the failed commit.
         break;
     }
   };
