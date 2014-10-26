@@ -48,5 +48,4 @@ npm test
 * Verify and write tests for multiple pull request attachments.
 * Verify that autolander does not get confused with non pull-request attachments.
 * Tests needed for:
-** Successful pull request with repo which does not contain a taskgraph.
 ** Failed CI pull request with repo which contains taskgraph.
