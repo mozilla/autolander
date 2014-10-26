@@ -9,6 +9,7 @@ var reviewAttachment = require('./support/review_attachment');
 var setCheckinNeeded = require('./support/set_checkin_needed');
 var waitForAttachments = require('./support/wait_for_attachments');
 var waitForLandingComment = require('./support/wait_for_landing_comment');
+var waitForCheckinNeededRemoved = require('./support/wait_for_checkin_needed_removed');
 
 suite('taskgraph finished', function() {
 
@@ -39,5 +40,6 @@ suite('taskgraph finished', function() {
 
     // The empty tc case should pass immediately, and we should land and comment in the bug.
     yield waitForLandingComment(runtime, bug.id);
+    yield waitForCheckinNeededRemoved(runtime, bug.id);
   }));
 });
