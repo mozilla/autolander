@@ -1,7 +1,7 @@
 var getAttachments = require('./get_attachments');
 var Promise = require('promise');
 
-var WAIT_INTERVAL = 500;
+var WAIT_INTERVAL = 2000;
 var MAX_TRIES = 10;
 
 function sleep(n) {
@@ -20,6 +20,7 @@ module.exports = function * (runtime, bugId) {
   while (tries++ < MAX_TRIES) {
     var attachments = yield getAttachments(runtime, bugId);
     if (attachments.length) return attachments;
-    sleep(WAIT_INTERVAL);
+    yield sleep(WAIT_INTERVAL);
   }
+  throw new Error('Cound not find attachment.');
 };

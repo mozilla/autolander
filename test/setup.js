@@ -56,6 +56,4 @@ module.exports = function *(runtime) {
     },
     token: runtime.config.githubConfig.token
   });
-
-  console.log('Hook req is:', hookReq);
 };

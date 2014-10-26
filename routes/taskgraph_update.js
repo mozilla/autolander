@@ -27,7 +27,7 @@ module.exports = function(runtime) {
     var revisionInfo = JSON.parse(taskInfo.tags.revisions);
     var pullInfo = JSON.parse(taskInfo.tags.pull);
     var params = JSON.parse(taskInfo.tags.params);
-    var bugId = taskInfo.tags.bugId;
+    var bugId = pullInfo.bugId;
 
     switch (detail.payload.status.state) {
       case 'running':
@@ -48,8 +48,12 @@ module.exports = function(runtime) {
           debug('error updating ref', e);
         }
 
-        var commitUrl = 'https://github.com/' + params.githubBaseUser + '/' + params.githubBaseRepo + '/commit/' + params.githubHeadRevision;
-        yield runtime.bugzilla.addLandingComment(runtime, bugId, commitUrl);
+        try {
+          var commitUrl = 'https://github.com/' + params.githubBaseUser + '/' + params.githubBaseRepo + '/commit/' + params.githubHeadRevision;
+          yield bugzilla.addLandingComment(runtime, bugId, commitUrl);
+        } catch(e) {
+          debug('could not add landing commit', bugId, commitUrl);
+        }
         break;
       case 'blocked':
         // Re-create the integration branch on a failure, without the failed commit.

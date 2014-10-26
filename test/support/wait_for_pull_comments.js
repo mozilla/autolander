@@ -1,7 +1,7 @@
 var getPullComments = require('./get_pull_comments');
 var Promise = require('promise');
 
-var WAIT_INTERVAL = 500;
+var WAIT_INTERVAL = 2000;
 var MAX_TRIES = 10;
 
 function sleep(n) {
@@ -24,6 +24,7 @@ module.exports = function * (runtime, user, repo, num, minRequred) {
   while (tries++ < MAX_TRIES) {
     var comments = yield getPullComments(runtime, user, repo, num);
     if (comments.length >= minRequred) return comments;
-    sleep(WAIT_INTERVAL);
+    yield sleep(WAIT_INTERVAL);
   }
+  throw new Error('Cound not find pull request comment.');
 };

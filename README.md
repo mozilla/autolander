@@ -28,7 +28,20 @@ DEBUG=* node --harmony ./bin/app
 
 // Start for production and debugging
 DEBUG=* node --harmony ./bin/app production
+
 ```
+
+## Running tests
+
+Run end-to-end integration tests with the application server already running.
+```
+# Run all tests for the project:
+npm test
+
+# Run a single test:
+./test/runone.sh some_test.js
+```
+
 
 ## TODO
 * Handle when a github merge fails - we should comment on the pull request that we could not merge it and remove the checkin-needed flag.
@@ -37,8 +50,6 @@ DEBUG=* node --harmony ./bin/app production
 * Verify and write tests for multiple pull request attachments.
 * Verify that autolander does not get confused with non pull-request attachments.
 * Tests needed for:
-** Invalid pull request name.
 ** Successful pull request with repo which does not contain a taskgraph.
 ** Un-mergeable pull request.
-** Successful pull request with repo which contains taskgraph.
 ** Failed CI pull request with repo which contains taskgraph.
