@@ -15,7 +15,6 @@ var waitForNonIntegrableBugComment = require('./support/wait_for_non_integrable_
 var waitForPullComments = require('./support/wait_for_pull_comments');
 
 suite('pull request which can not be applied to the integration branch', function() {
-
   var runtime;
 
   suiteSetup(co(function * () {
@@ -30,7 +29,7 @@ suite('pull request which can not be applied to the integration branch', functio
   }));
 
   test('comments on bug and removes checkin-needed', co(function * () {
-    yield commitToBranch(runtime, 'master', 'tc_repo/taskgraph.json');
+    yield commitToBranch(runtime, 'master', 'tc_success/taskgraph.json');
     yield commitContent(runtime, 'master', 'foo.txt', 'foo');
     var bug1 = yield createBug(runtime);
     var bug2 = yield createBug(runtime);

@@ -23,7 +23,7 @@ module.exports = function(runtime) {
 
     var taskInfo = yield scheduler.info(detail.payload.status.taskGraphId);
     debug('scheduler info', taskInfo);
-
+    debug(Date.now());
     var revisionInfo = JSON.parse(taskInfo.tags.revisions);
     var pullInfo = JSON.parse(taskInfo.tags.pull);
     var params = JSON.parse(taskInfo.tags.params);
@@ -32,7 +32,7 @@ module.exports = function(runtime) {
     switch (detail.payload.status.state) {
       case 'running':
         debug('task is running');
-        //break;
+        break;
       case 'finished':
         // Fast-forward the base branch if the run is successful.
         try {
@@ -58,6 +58,9 @@ module.exports = function(runtime) {
         break;
       case 'blocked':
         // Re-create the integration branch on a failure, without the failed commit.
+        debug('GOT BLOCKED UPDATE', bugId, params, revisionInfo);
+        yield bugzilla.addCiFailedComment(runtime, bugId, 'http://docs.taskcluster.net/tools/task-graph-inspector/#' + detail.payload.status.taskGraphId);
+        yield bugzilla.removeCheckinNeeded(runtime, bugId);
         break;
     }
   };

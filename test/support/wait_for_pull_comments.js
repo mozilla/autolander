@@ -1,8 +1,8 @@
 var getPullComments = require('./get_pull_comments');
 var Promise = require('promise');
 
-var WAIT_INTERVAL = 2000;
-var MAX_TRIES = 10;
+var WAIT_INTERVAL = 5000;
+var MAX_TRIES = 20;
 
 function sleep(n) {
   return new Promise(function(accept) {

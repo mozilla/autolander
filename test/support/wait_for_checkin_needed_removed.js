@@ -1,13 +1,18 @@
 var Promise = require('promise');
 var thunkify = require('thunkify');
 
+const DEFAULT_WAIT_INTERVAL = 5000;
 var WAIT_INTERVAL = 2000;
-var MAX_TRIES = 10;
+var MAX_TRIES = 20;
 
 function sleep(n) {
   return new Promise(function(accept) {
     return setTimeout(accept, n);
   });
+}
+
+function resetWaitInterval() {
+  WAIT_INTERVAL = DEFAULT_WAIT_INTERVAL;
 }
 
 /**
@@ -21,8 +26,12 @@ module.exports = function * (runtime, bugId) {
     var getBug = thunkify(runtime.bugzillaApi.getBug.bind(runtime.bugzillaApi));
     var bug = yield getBug(bugId);
 
-    if (bug.keywords.indexOf('checkin-needed') === -1) return true;
+    if (bug.keywords.indexOf('checkin-needed') === -1) {
+      resetWaitInterval();
+      return true;
+    }
     yield sleep(WAIT_INTERVAL);
   }
+  resetWaitInterval();
   throw new Error('Checkin-needed not removed.');
 };
