@@ -14,7 +14,7 @@ var waitForLandingComment = require('./support/wait_for_landing_comment');
 var waitForNonIntegrableBugComment = require('./support/wait_for_non_integrable_bug_comment');
 var waitForPullComments = require('./support/wait_for_pull_comments');
 
-suite('pull request which can not be applied to the integration branch', function() {
+suite('pull request which can not be applied to the integration branch > ', function() {
   var runtime;
 
   suiteSetup(co(function * () {

@@ -1,10 +1,11 @@
-console.log('Test Setup.');
-
 var childProcess = require('child_process');
 var co = require('co');
 var createRepo = require('./support/create_repo');
+var debug = require('debug')('test:setup');
 var deleteRepo = require('./support/delete_repo');
 var thunkify = require('thunkify');
+
+debug('test setup');
 
 function getTunnelUrl() {
   return function(fn) {
@@ -13,17 +14,17 @@ function getTunnelUrl() {
       ngrok.kill();
     });
     ngrok.on('message', function(m) {
-      console.log('Url is:', m.url);
+      debug('Url is:', m.url);
       fn(null, m.url);
     });
     ngrok.on('exit', function(data) {
-      console.log('ngrok exit ' + data);
+      debug('ngrok exit ' + data);
     });
     ngrok.on('close', function(data) {
-      console.log('ngrok close ' + data);
+      debug('ngrok close ' + data);
     });
     ngrok.on('error', function(data) {
-      console.log('ngrok error ' + data);
+      debug('ngrok error ' + data);
     });
   };
 }
@@ -34,12 +35,16 @@ module.exports = function *(runtime) {
   // Delete the repo if it exists.
   try {
     yield deleteRepo(runtime, 'autolander');
-  } catch(e) {}
+  } catch(e) {
+    debug('could not delete repo');
+  }
 
+  debug('creating autolander-test repoitory');
   yield createRepo(runtime, 'autolander');
   var thunkTunnelUrl = thunkify(getTunnelUrl());
   var tunnelUrl = yield thunkTunnelUrl();
 
+  debug('attaching github hook', tunnelUrl);
   var createHook = thunkify(runtime.githubApi.repos.createHook.bind(runtime.githubApi.repos));
   var hookReq = yield createHook({
     user: 'autolander',

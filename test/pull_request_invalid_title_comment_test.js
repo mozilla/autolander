@@ -7,7 +7,7 @@ var createPullRequest = require('./support/create_pull_request');
 var branchFromMaster = require('./support/branch_from_master');
 var waitForPullComments = require('./support/wait_for_pull_comments');
 
-suite('validates pull request title', function() {
+suite('validates pull request title > ', function() {
   var runtime;
 
   suiteSetup(co(function * () {

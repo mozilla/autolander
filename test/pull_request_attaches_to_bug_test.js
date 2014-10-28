@@ -7,7 +7,7 @@ var createPullRequest = require('./support/create_pull_request');
 var branchFromMaster = require('./support/branch_from_master');
 var waitForAttachments = require('./support/wait_for_attachments');
 
-suite('attaches to bug', function() {
+suite('attaches to bug > ', function() {
   var runtime;
 
   suiteSetup(co(function * () {

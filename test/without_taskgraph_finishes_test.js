@@ -11,7 +11,7 @@ var waitForAttachments = require('./support/wait_for_attachments');
 var waitForLandingComment = require('./support/wait_for_landing_comment');
 var waitForCheckinNeededRemoved = require('./support/wait_for_checkin_needed_removed');
 
-suite('repo without taskgraph', function() {
+suite('repo without taskgraph > ', function() {
 
   var runtime;
 
