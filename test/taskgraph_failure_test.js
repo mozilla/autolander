@@ -16,6 +16,7 @@ var waitForAttachments = require('./support/wait_for_attachments');
 var waitForFailedCommentInBug = require('./support/wait_for_failed_comment_in_bug');
 var waitForLandingComment = require('./support/wait_for_landing_comment');
 var waitForCheckinNeededRemoved = require('./support/wait_for_checkin_needed_removed');
+var waitForPullComments = require('./support/wait_for_pull_comments');
 
 suite('taskgraph failure > ', function() {
   var runtime;
@@ -73,6 +74,9 @@ suite('taskgraph failure > ', function() {
     // The first pull request should not be merged.
     pull1 = yield getPullRequest(runtime, 'autolander', 'autolander-test', pull1.number);
     assert.equal(pull1.merged, false);
+    var comments = yield waitForPullComments(runtime, 'autolander', 'autolander-test', pull1.number);
+    var expected = require('./../lib/github').COMMENTS.CI_FAILED;
+    assert.ok(comments[0].body.indexOf(expected) !== -1);
 
     // The second pull request should be merged eventually.
     yield waitForLandingComment(runtime, bug2.id);

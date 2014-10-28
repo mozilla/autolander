@@ -68,7 +68,11 @@ module.exports = function(runtime) {
         }
         break;
       case 'blocked':
-        yield bugzilla.addCiFailedComment(runtime, bugId, 'http://docs.taskcluster.net/tools/task-graph-inspector/#' + detail.payload.status.taskGraphId);
+        // Comment on bugzilla and github.
+        var comment = 'http://docs.taskcluster.net/tools/task-graph-inspector/#' + detail.payload.status.taskGraphId + '\n\n' + github.COMMENTS.CI_FAILED;
+        yield bugzilla.addCiFailedComment(runtime, bugId, comment);
+        yield github.addComment(runtime, pullInfo.user, pullInfo.repo, pullInfo.number, comment);
+
         yield bugzilla.removeCheckinNeeded(runtime, bugId);
         yield rebuildIntegrationBranch(runtime, bugId, revisionInfo, pullInfo, params);
         break;

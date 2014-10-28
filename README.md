@@ -41,10 +41,3 @@ npm test
 # Run a single test:
 ./test/runone.sh some_test.js
 ```
-
-
-## TODO
-* Ensure we unsubscribe from bugs as needed.
-* Change table storage to gracefully handle multiple pull requests on a bug. It should subscribe and unsubsribe based on the pull request id. Right now if you autoland a bug, further attachments on the bug can not be autolanded if they were opened before the first autolanding. 
-* Verify and write tests for multiple pull request attachments.
-* Verify that autolander does not get confused with non pull-request attachments.

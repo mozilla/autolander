@@ -27,7 +27,9 @@ module.exports = function(runtime) {
     var prTitle = pullRequest.title;
     var bugId = prTitle.match(/^Bug\s{1}([0-9]{5,})\s{1}-{1}\s{1}.*/);
     if (!bugId || !bugId[1]) {
-      yield github.addComment(runtime, body.pull_request, github.COMMENTS.NO_BUG_FOUND);
+      var pull = body.pull_request;
+      var repoParts = pull.base.repo.full_name.split('/');
+      yield github.addComment(runtime, repoParts[0], repoParts[1], pull.number, github.COMMENTS.NO_BUG_FOUND);
       return this.throw(400, 'Bug ID not found.');
     }
     bugId = bugId[1];
