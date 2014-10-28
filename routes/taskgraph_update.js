@@ -57,8 +57,6 @@ module.exports = function(runtime) {
         }
         break;
       case 'blocked':
-        // Re-create the integration branch on a failure, without the failed commit.
-        debug('GOT BLOCKED UPDATE', bugId, params, revisionInfo);
         yield bugzilla.addCiFailedComment(runtime, bugId, 'http://docs.taskcluster.net/tools/task-graph-inspector/#' + detail.payload.status.taskGraphId);
         yield bugzilla.removeCheckinNeeded(runtime, bugId);
         break;
