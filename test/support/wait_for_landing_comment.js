@@ -3,7 +3,7 @@ var Promise = require('promise');
 
 var LOOK_FOR = 'Merged to';
 var WAIT_INTERVAL = 5000;
-var MAX_TRIES = 10;
+var MAX_TRIES = 100;
 
 function sleep(n) {
   return new Promise(function(accept) {

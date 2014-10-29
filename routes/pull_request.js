@@ -1,41 +1,49 @@
 var bugzilla = require('../lib/bugzilla');
+var debug = require('debug')('autolander:route:pull_request');
 var github = require('../lib/github');
+var thunkify = require('thunkify');
 
 module.exports = function(runtime) {
-  return function * () {
+  return function * (detail) {
 
-    var body = this.request.body;
-    if (!body) {
-      return this.throw(400, 'Must contain a body');
+    if (!detail.repo || !detail.owner || !detail.number) {
+      debug('Missing pull request info.');
+      return;
     }
 
-    var repository = body.repository;
-    var pullRequest = body.pull_request;
-    var action = body.action;
+    var pullRequest = thunkify(runtime.githubApi.pullRequests.get.bind(runtime.githubApi.pullRequests));
+    var pull = yield pullRequest({
+      user: detail.owner,
+      repo: detail.repo,
+      number: detail.number,
+      token: runtime.config.githubConfig.token
+    });
+    debug(pull);
 
-    if (!pullRequest) {
-      return this.throw(400, 'Invalid or missing pull request data');
+    if (!pull) {
+      debug('Invalid or missing pull request data');
+      return;
     }
 
     // We don't need to do anything on closed PRs.
-    if (action === 'closed') {
+    if (pull.state !== 'open') {
       this.status = 200;
       return;
     }
 
     // Validate that we have a bug number formatted to: "Bug xxxx - "
-    var prTitle = pullRequest.title;
+    var prTitle = pull.title;
     var bugId = prTitle.match(/^Bug\s{1}([0-9]{5,})\s{1}-{1}\s{1}.*/);
     if (!bugId || !bugId[1]) {
-      var pull = body.pull_request;
       var repoParts = pull.base.repo.full_name.split('/');
       yield github.addComment(runtime, repoParts[0], repoParts[1], pull.number, github.COMMENTS.NO_BUG_FOUND);
-      return this.throw(400, 'Bug ID not found.');
+      debug('Bug ID not found.');
+      return;
     }
     bugId = bugId[1];
 
-    yield bugzilla.attachPullRequest(runtime, bugId, body);
-    yield runtime.pulseApi.subscribe(runtime, bugId, body);
+    yield bugzilla.attachPullRequest(runtime, bugId, pull);
+    yield runtime.pulseApi.subscribe(runtime, bugId, pull);
 
     // Everything was ok.
     this.status = 200;
