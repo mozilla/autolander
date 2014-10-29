@@ -26,6 +26,11 @@
             "-c",
             "echo \"Hello World\";"
           ]
+        },
+        "extra": {
+          "treeherder": {
+            "symbol": "A"
+          }
         }
       }
     }
