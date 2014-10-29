@@ -18,7 +18,7 @@
           "source": "http://github.com/KevinGrandon/autolander"
         },
         "provisionerId": "aws-provisioner",
-        "workerType": "v2",
+        "workerType": "gaia",
         "scopes": [],
         "payload": {
           "command": [
