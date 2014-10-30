@@ -3,16 +3,23 @@ var co = require('co');
 var createRepo = require('./support/create_repo');
 var debug = require('debug')('test:setup');
 var deleteRepo = require('./support/delete_repo');
+var spawn = childProcess.spawn;
 var thunkify = require('thunkify');
 
 debug('test setup');
 
+var childProcesses = [];
+
+process.on('exit', function() {
+  childProcesses.forEach(function(child) {
+    child.kill();
+  });
+});
+
 function getTunnelUrl() {
   return function(fn) {
     var ngrok = childProcess.fork('./test/ngrok_runner.js')
-    process.on('exit', function() {
-      ngrok.kill();
-    });
+    childProcesses.push(ngrok);
     ngrok.on('message', function(m) {
       debug('Url is:', m.url);
       fn(null, m.url);
@@ -43,6 +50,25 @@ module.exports = function *(runtime) {
   yield createRepo(runtime, 'autolander');
   var thunkTunnelUrl = thunkify(getTunnelUrl());
   var tunnelUrl = yield thunkTunnelUrl();
+
+  debug('starting the web server and worker');
+  var worker = spawn('node', [
+      '--harmony',
+      './bin/worker'
+    ], {
+    execArgv: ['--harmony'],
+    stdio: 'pipe'
+  });
+  childProcesses.push(worker);
+
+  var web = spawn('node', [
+      '--harmony',
+      './bin/web'
+    ], {
+    execArgv: ['--harmony'],
+    stdio: 'pipe'
+  });
+  childProcesses.push(web);
 
   debug('attaching github hook', tunnelUrl);
   var createHook = thunkify(runtime.githubApi.repos.createHook.bind(runtime.githubApi.repos));
