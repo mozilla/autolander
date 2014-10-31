@@ -14,6 +14,7 @@ var setCheckinNeeded = require('./support/set_checkin_needed');
 var waitForAttachments = require('./support/wait_for_attachments');
 var waitForLandingComment = require('./support/wait_for_landing_comment');
 var waitForCheckinNeededRemoved = require('./support/wait_for_checkin_needed_removed');
+var waitForUnsubscribedFromBug = require('./support/wait_for_unsubscribed_from_bug');
 
 suite('taskgraph success > ', function() {
   var runtime;
@@ -50,5 +51,7 @@ suite('taskgraph success > ', function() {
     // The empty tc case should pass immediately, and we should land and comment in the bug.
     yield waitForLandingComment(runtime, bug.id);
     yield waitForCheckinNeededRemoved(runtime, bug.id);
+
+    yield waitForUnsubscribedFromBug(runtime, bug.id);
   }));
 });

@@ -52,9 +52,10 @@ module.exports = function *(runtime) {
   var tunnelUrl = yield thunkTunnelUrl();
 
   debug('starting the web server and worker');
+  /*
   var worker = spawn('node', [
       '--harmony',
-      './bin/worker'
+      './bin/worker',
     ], {
     execArgv: ['--harmony'],
     stdio: 'pipe'
@@ -69,6 +70,7 @@ module.exports = function *(runtime) {
     stdio: 'pipe'
   });
   childProcesses.push(web);
+  */
 
   debug('attaching github hook', tunnelUrl);
   var createHook = thunkify(runtime.githubApi.repos.createHook.bind(runtime.githubApi.repos));
