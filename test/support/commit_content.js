@@ -16,11 +16,13 @@ module.exports = function * (runtime, branch, repoPath, content, message) {
   content = new Buffer(content).toString('base64');
 
   var existingSha;
+  yield runtime.sleep();
 
   try {
     existingSha = yield getContent(runtime, branch, repoPath, 'sha');
   } catch (e) {}
 
+  yield runtime.sleep();
   if (existingSha) {
     var updateFile = thunkify(runtime.githubApi.repos.updateFile.bind(runtime.githubApi.repos));
     yield updateFile({

@@ -6,6 +6,7 @@ var thunkify = require('thunkify');
  * @param {Object} pull
  */
 module.exports = function * (runtime, pull) {
+  yield runtime.sleep();
   var closePullReq = thunkify(runtime.githubApi.pullRequests.update.bind(runtime.githubApi.pullRequests));
   return yield closePullReq({
     user: 'autolander',

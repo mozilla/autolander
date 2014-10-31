@@ -24,7 +24,7 @@ module.exports = function(runtime) {
     var bug = yield getBug(bugId);
 
     // Get the active pull requests.
-    var pulls = yield bugzilla.getOpenPullsForBug(runtime, bug, bugzilla.canLand)
+    var pulls = yield bugzilla.getOpenPullsForBug(runtime, bug, bugzilla.canLand);
 
     // Unsubscribe if there are no open pulls for this bug.
     if (!pulls.length) {

@@ -8,6 +8,7 @@ var thunkify = require('thunkify');
  * @param {Number} num
  */
 module.exports = function * (runtime, user, repo, num) {
+  yield runtime.sleep();
   var getComments = thunkify(runtime.githubApi.issues.getComments.bind(runtime.githubApi.issues));
   return yield getComments({
     user: user,

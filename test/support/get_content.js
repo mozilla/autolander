@@ -9,6 +9,7 @@ var thunkify = require('thunkify');
  * @seealso https://developer.github.com/v3/repos/contents/#create-a-file
  */
 module.exports = function * (runtime, ref, path, field) {
+  yield runtime.sleep();
   var getContent = thunkify(runtime.githubApi.repos.getContent.bind(runtime.githubApi.repos));
   var content = yield getContent({
     user: 'autolander',

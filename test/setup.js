@@ -71,6 +71,7 @@ module.exports = function *(runtime) {
   childProcesses.push(web);
 
   debug('attaching github hook', tunnelUrl);
+  yield runtime.sleep();
   var createHook = thunkify(runtime.githubApi.repos.createHook.bind(runtime.githubApi.repos));
   var hookReq = yield createHook({
     user: 'autolander',

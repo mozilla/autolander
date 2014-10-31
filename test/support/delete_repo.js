@@ -6,6 +6,7 @@ var thunkify = require('thunkify');
  * @param {String} user The github user for the repository.
  */
 module.exports = function * (runtime, user) {
+  yield runtime.sleep();
   var remove = thunkify(runtime.githubApi.repos.delete.bind(runtime.githubApi.repos));
   yield remove({
     user: user,

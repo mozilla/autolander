@@ -6,6 +6,7 @@ var thunkify = require('thunkify');
  * @param {String} user The github user for the repository.
  */
 module.exports = function * (runtime, user) {
+  yield runtime.sleep();
   var create = thunkify(runtime.githubApi.repos.create.bind(runtime.githubApi.repos));
   yield create({
     user: user,

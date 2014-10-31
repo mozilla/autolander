@@ -21,6 +21,7 @@ module.exports = function * (runtime, branch, path) {
   var content = fs.readFileSync(__dirname + '/../fixtures/' + path, 'utf8');
   content = new Buffer(content).toString('base64');
 
+  yield runtime.sleep();
   var createFile = thunkify(runtime.githubApi.repos.createFile.bind(runtime.githubApi.repos));
   yield createFile({
     user: 'autolander',

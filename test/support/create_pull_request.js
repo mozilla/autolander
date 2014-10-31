@@ -8,6 +8,7 @@ var thunkify = require('thunkify');
  * @param {String} title
  */
 module.exports = function * (runtime, head, base, title) {
+  yield runtime.sleep();
   var create = thunkify(runtime.githubApi.pullRequests.create.bind(runtime.githubApi.pullRequests));
   return yield create({
     user: 'autolander',

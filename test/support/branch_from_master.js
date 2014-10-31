@@ -7,6 +7,7 @@ var thunkify = require('thunkify');
  */
 module.exports = function * (runtime, name) {
 
+  yield runtime.sleep();
   var getRef = thunkify(runtime.githubApi.gitdata.getReference.bind(runtime.githubApi.gitdata));
   var masterRef = yield getRef({
     user: 'autolander',
@@ -15,6 +16,7 @@ module.exports = function * (runtime, name) {
     token: runtime.config.githubConfig.token
   });
 
+  yield runtime.sleep();
   var createRef = thunkify(runtime.githubApi.gitdata.createReference.bind(runtime.githubApi.gitdata));
   var ref = yield createRef({
     user: 'autolander',
