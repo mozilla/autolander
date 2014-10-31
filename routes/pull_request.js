@@ -27,6 +27,7 @@ module.exports = function(runtime) {
 
     // We don't need to do anything on closed PRs.
     if (pull.state !== 'open') {
+      debug('pull request is not open', pull.state);
       this.status = 200;
       return;
     }
@@ -43,7 +44,7 @@ module.exports = function(runtime) {
     bugId = bugId[1];
 
     yield bugzilla.attachPullRequest(runtime, bugId, pull);
-    yield runtime.pulseApi.subscribe(runtime, bugId, pull);
+    yield runtime.pulseApi.subscribe(runtime, bugId);
 
     // Everything was ok.
     this.status = 200;
