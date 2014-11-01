@@ -31,7 +31,7 @@ module.exports = function(runtime) {
       debug('nothing to process');
 
       // Unsubscribe if necessary.
-      var remainingPulls = yield bugzilla.getOpenPullsForBug(runtime, bug, function filter(bug, attachment) {
+      var remainingPulls = yield bugzilla.getOpenPullsForBug(runtime, bug, function * (runtime, bug, attachment) {
         return true;
       });
 

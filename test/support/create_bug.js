@@ -4,16 +4,17 @@ var thunkify = require('thunkify');
  * Creates a bug.
  * @param {Object} runtime
  * @param {String} [summary] The bug summary.
+ * @param {String} [component] The bug component.
  */
-module.exports = function * (runtime, summary) {
+module.exports = function * (runtime, summary, component) {
   var newBug = {
-    component: 'General',
+    summary: summary || 'Test autolander bug',
+    component: component || 'Gaia::GithubBot',
     product: 'Firefox OS',
     op_sys: 'All',
     platform: "All",
     target_milestone: '---',
-    version: "unspecified",
-    summary: summary || 'Test autolander bug'
+    version: "unspecified"
   };
 
   var createBug = thunkify(runtime.bugzillaApi.createBug.bind(runtime.bugzillaApi));

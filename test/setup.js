@@ -51,6 +51,10 @@ module.exports = function *(runtime) {
   var thunkTunnelUrl = thunkify(getTunnelUrl());
   var tunnelUrl = yield thunkTunnelUrl();
 
+  /*
+  // Commented out for testing.
+  // Can uncomment once we figure out the best way to parse DEBUG logging
+  // while running the tests.
   debug('starting the web server and worker');
   var worker = spawn('node', [
       '--harmony',
@@ -69,6 +73,7 @@ module.exports = function *(runtime) {
     stdio: 'pipe'
   });
   childProcesses.push(web);
+  */
 
   debug('attaching github hook', tunnelUrl);
   yield runtime.sleep();
