@@ -63,6 +63,7 @@ module.exports = function(runtime) {
           var commitUrl = 'https://github.com/' + params.githubBaseUser + '/' + params.githubBaseRepo + '/commit/' + params.githubHeadRevision;
           yield bugzilla.addLandingComment(runtime, bugId, commitUrl);
           yield bugzilla.removeCheckinNeeded(runtime, bugId);
+          yield bugzilla.resolveFix(runtime, bugId);
         } catch(e) {
           debug('could not add landing commit', bugId, commitUrl);
         }
