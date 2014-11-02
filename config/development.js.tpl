@@ -4,6 +4,11 @@ function E(key) {
 
 module.exports = {
   port: process.env.port || 80,
+  amqpConfig: {
+    autoDelete: true,
+    exclusive: false,
+    durable: false
+  },
   azureConfig: {
     accountUrl: 'http://' + E('AZURE_ACCOUNT_NAME') + '.table.core.windows.net/',
     accountName: E('AZURE_ACCOUNT_NAME'),
