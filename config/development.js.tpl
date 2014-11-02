@@ -1,26 +1,26 @@
-function E(key) {
+function ENV(key) {
   return process.env[key]
 }
 
 module.exports = {
-  port: process.env.port || 80,
+  port: ENV('WEB_PORT') || 80,
   amqpConfig: {
     autoDelete: true,
     exclusive: false,
     durable: false
   },
   azureConfig: {
-    accountUrl: 'http://' + E('AZURE_ACCOUNT_NAME') + '.table.core.windows.net/',
-    accountName: E('AZURE_ACCOUNT_NAME'),
-    accountKey: E('AZURE_ACCOUNT_KEY')
+    accountUrl: 'http://' + ENV('AZURE_ACCOUNT_NAME') + '.table.core.windows.net/',
+    accountName: ENV('AZURE_ACCOUNT_NAME'),
+    accountKey: ENV('AZURE_ACCOUNT_KEY')
   },
   githubConfig: {
-    token: E('GITHUB_TOKEN')
+    token: ENV('GITHUB_TOKEN')
   },
   bugzillaConfig: {
     url: "https://bugzilla.mozilla.org/rest/",
-    username: E('BUGZILLA_EMAIL'),
-    password: E('BUGZILLA_PASSWORD')
+    username: ENV('BUGZILLA_EMAIL'),
+    password: ENV('BUGZILLA_PASSWORD')
   },
   pulseConfig: {
     url: 'amqp://public:public@pulse.mozilla.org',
@@ -28,18 +28,18 @@ module.exports = {
     exchange: 'exchange/bugzilla/simple'
   },
   taskclusterConfig: {
-    name: E('TC_CLIENT_NAME'),
-    clientId: E('TC_CLIENT_ID'),
-    accessToken: E('TC_CLIENT_TOKEN')
+    name: ENV('TC_CLIENT_NAME'),
+    clientId: ENV('TC_CLIENT_ID'),
+    accessToken: ENV('TC_CLIENT_TOKEN')
   },
   taskPulseConfig: {
-    username: E('TC_PULSE_USER'),
-    password: E('TC_PULSE_PASSWORD')
+    username: ENV('TC_PULSE_USER'),
+    password: ENV('TC_PULSE_PASSWORD')
   },
   treeherderConfig: {
     name: 'gaia-try',
     baseUrl: 'https://treeherder.mozilla.org/api/',
-    consumerKey: E('TREEHERDER_KEY'),
-    consumerSecret: E('TREEHERDER_SECRET')
+    consumerKey: ENV('TREEHERDER_KEY'),
+    consumerSecret: ENV('TREEHERDER_SECRET')
   }
 }

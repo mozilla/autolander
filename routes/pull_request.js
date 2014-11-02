@@ -33,8 +33,9 @@ module.exports = function(runtime) {
     }
 
     // Validate that we have a bug number formatted to: "Bug xxxx - "
+    // For now allow preceding characters to allow for reverts.
     var prTitle = pull.title;
-    var bugId = prTitle.match(/^Bug\s{1}([0-9]{5,})\s{1}-{1}\s{1}.*/);
+    var bugId = prTitle.match(/^.*Bug\s{1}([0-9]{5,})\s{1}-{1}\s{1}.*/);
     if (!bugId || !bugId[1]) {
       var repoParts = pull.base.repo.full_name.split('/');
       yield github.addComment(runtime, repoParts[0], repoParts[1], pull.number, github.COMMENTS.NO_BUG_FOUND);
