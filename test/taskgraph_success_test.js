@@ -8,6 +8,7 @@ var commitContent = require('./support/commit_content');
 var commitToBranch = require('./support/commit_to_branch');
 var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
+var getReference = require('./support/get_reference');
 var branchFromMaster = require('./support/branch_from_master');
 var reviewAttachment = require('./support/review_attachment');
 var setCheckinNeeded = require('./support/set_checkin_needed');
@@ -55,5 +56,9 @@ suite('taskgraph success > ', function() {
     yield waitForResolvedFixed(runtime, bug.id);
 
     yield waitForUnsubscribedFromBug(runtime, bug.id);
+
+    // The integration branch should go away after a successful integration.
+    var integrationBranch = yield getReference(runtime, 'autolander', 'autolander-test', 'integration-master');
+    assert.equal(integrationBranch, null);
   }));
 });

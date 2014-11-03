@@ -1,9 +1,9 @@
 var bugzilla = require('../lib/bugzilla');
 var debug = require('debug')('autolander:route:taskgraph_update');
 var github = require('../lib/github');
-var thunkify = require('thunkify');
-
+var removeBranch = require('../lib/github/remove_branch');
 var Scheduler = require('taskcluster-client').Scheduler;
+var thunkify = require('thunkify');
 
 /**
  * Called when we receive an update for a taskgraph.
@@ -64,6 +64,11 @@ module.exports = function(runtime) {
           yield bugzilla.addLandingComment(runtime, bugId, commitUrl);
           yield bugzilla.removeCheckinNeeded(runtime, bugId);
           yield bugzilla.resolveFix(runtime, bugId);
+
+          // If there are no more currently integrating bugs, remove the integration branch.
+          if (!runtime.bugStore.activeBugs.length) {
+            yield removeBranch(runtime, params.githubBaseUser, params.githubBaseRepo, 'integration-' + params.githubBaseBranch);
+          }
         } catch(e) {
           debug('could not add landing commit', bugId, commitUrl);
         }
@@ -93,6 +98,7 @@ var removeActiveBug = function (runtime, bugId) {
   debug('remaining active bugs', runtime.bugStore.activeBugs);
 }
 
+
 /** 
  * Rebuilds the integration branch after a failed taskgraph.
  * @param {Object} runtime
@@ -107,17 +113,7 @@ var rebuildIntegrationBranch = function * (runtime, bugId, revisionInfo, pullInf
   runtime.bugStore.activeTaskGraphIds = {};
 
   // Remove the integration branch.
-  try {
-    var remove = thunkify(runtime.githubApi.gitdata.deleteReference.bind(runtime.githubApi.gitdata));
-    yield remove({
-      user: params.githubBaseUser,
-      repo: params.githubBaseRepo,
-      ref: 'heads/integration-' + params.githubBaseBranch,
-      token: runtime.config.githubConfig.token
-    });
-  } catch(e) {
-    debug('error removing integration branch');
-  }
+  yield removeBranch(runtime, params.githubBaseUser, params.githubBaseRepo, 'integration-' + params.githubBaseBranch);
 
   // Re-create the integration branch.
   try {
