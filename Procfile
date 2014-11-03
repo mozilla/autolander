@@ -1,2 +1,2 @@
-web: node --harmony ./bin/web $TYPE
-worker: node --harmony ./bin/worker $TYPE
+web: node --harmony ./bin/web production $TYPE
+worker: node --harmony ./bin/worker production $TYPE
