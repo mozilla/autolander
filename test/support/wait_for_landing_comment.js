@@ -1,7 +1,7 @@
 var getBugComments = require('./get_bug_comments');
 var Promise = require('promise');
 
-var LOOK_FOR = 'Merged to';
+var LOOK_FOR = 'Pull request has landed in master';
 var WAIT_INTERVAL = 5000;
 var MAX_TRIES = 100;
 
