@@ -1,5 +1,6 @@
 var assert = require('assert');
 var co = require('co');
+var helper = require('./helper');
 
 var commitToBranch = require('./support/commit_to_branch');
 var createBug = require('./support/create_bug');
@@ -12,13 +13,11 @@ suite('validates pull request title > ', function() {
 
   suiteSetup(co(function * () {
     runtime = yield require('./support/runtime')()
-    var setup = require('./setup');
-    return yield setup(runtime);
+    return yield helper.setup(runtime);
   }));
 
   suiteTeardown(co(function * () {
-    var teardown = require('./teardown');
-    return yield teardown(runtime);
+    return yield helper.teardown(runtime);
   }));
 
   test('when missing a bug number', co(function * () {

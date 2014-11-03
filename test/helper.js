@@ -10,11 +10,13 @@ debug('test setup');
 
 var childProcesses = [];
 
-process.on('exit', function() {
+function killChildProcesses() {
   childProcesses.forEach(function(child) {
     child.kill();
   });
-});
+}
+
+process.on('exit', killChildProcesses);
 
 function getTunnelUrl() {
   return function(fn) {
@@ -36,7 +38,7 @@ function getTunnelUrl() {
   };
 }
 
-module.exports = function *(runtime) {
+exports.setup = function *(runtime) {
 
   // Try to start from a clean slate.
   // Delete the repo if it exists.
@@ -90,4 +92,10 @@ module.exports = function *(runtime) {
     },
     token: runtime.config.githubConfig.token
   });
+};
+
+exports.teardown = function *(runtime) {
+  // Commented out for now for testing.
+  //yield deleteRepo(runtime, 'autolander');
+  killChildProcesses();
 };

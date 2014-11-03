@@ -1,6 +1,7 @@
 var assert = require('assert');
 var co = require('co');
 var fs = require('fs');
+var helper = require('./helper');
 var jsTemplate = require('json-templater/object');
 var slugid = require('slugid');
 
@@ -23,13 +24,11 @@ suite('taskgraph success > ', function() {
 
   suiteSetup(co(function * () {
     runtime = yield require('./support/runtime')()
-    var setup = require('./setup');
-    return yield setup(runtime);
+    return yield helper.setup(runtime);
   }));
 
   suiteTeardown(co(function * () {
-    var teardown = require('./teardown');
-    return yield teardown(runtime);
+    return yield helper.teardown(runtime);
   }));
 
   test('patch is autolanded', co(function * () {

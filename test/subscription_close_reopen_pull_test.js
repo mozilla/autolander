@@ -1,5 +1,6 @@
 var assert = require('assert');
 var co = require('co');
+var helper = require('./helper');
 
 var closePullRequest = require('./support/close_pull_request');
 var commitContent = require('./support/commit_content');
@@ -22,13 +23,11 @@ suite('subscription > ', function() {
 
   suiteSetup(co(function * () {
     runtime = yield require('./support/runtime')()
-    var setup = require('./setup');
-    return yield setup(runtime);
+    return yield helper.setup(runtime);
   }));
 
   suiteTeardown(co(function * () {
-    var teardown = require('./teardown');
-    return yield teardown(runtime);
+    return yield helper.teardown(runtime);
   }));
 
   test('can autoland after close/re-open', co(function * () {

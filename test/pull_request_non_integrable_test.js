@@ -1,5 +1,6 @@
 var assert = require('assert');
 var co = require('co');
+var helper = require('./helper');
 
 var commitContent = require('./support/commit_content');
 var commitToBranch = require('./support/commit_to_branch');
@@ -19,13 +20,11 @@ suite('pull request which can not be applied to the integration branch > ', func
 
   suiteSetup(co(function * () {
     runtime = yield require('./support/runtime')()
-    var setup = require('./setup');
-    return yield setup(runtime);
+    return yield helper.setup(runtime);
   }));
 
   suiteTeardown(co(function * () {
-    var teardown = require('./teardown');
-    return yield teardown(runtime);
+    return yield helper.teardown(runtime);
   }));
 
   test('comments on bug and removes checkin-needed', co(function * () {
