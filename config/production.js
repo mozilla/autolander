@@ -3,7 +3,7 @@ function ENV(key) {
 }
 
 module.exports = {
-  port: ENV('WEB_PORT') || 80,
+  port: ENV('PORT') || 80,
   amqpConfig: {
     autoDelete: false,
     durable: true,
