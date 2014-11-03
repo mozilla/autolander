@@ -1,13 +1,13 @@
 function ENV(key) {
-  return process.env[key]
+  return process.env[key];
 }
 
 module.exports = {
   port: ENV('WEB_PORT') || 80,
   amqpConfig: {
-    autoDelete: true,
-    exclusive: false,
-    durable: false
+    autoDelete: false,
+    durable: true,
+    exclusive: false
   },
   azureConfig: {
     accountUrl: 'http://' + ENV('AZURE_ACCOUNT_NAME') + '.table.core.windows.net/',

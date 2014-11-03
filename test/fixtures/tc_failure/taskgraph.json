@@ -1,0 +1,38 @@
+{
+  "metadata": {
+    "name": "Autolander",
+    "description": "Autolander taskgraph",
+    "owner": "kgradon@mozilla.com",
+    "source": "http://github.com/KevinGrandon/autolander"
+  },
+  "scopes": ["queue:define-task:aws-provisioner/gaia"],
+  "tags": {},
+  "tasks": [
+    {
+      "taskId": "{{taskId}}",
+      "task": {
+        "metadata": {
+          "name": "i am a failure",
+          "description": "require prop",
+          "owner": "kgrandon@mozilla.com",
+          "source": "http://github.com/KevinGrandon/autolander"
+        },
+        "provisionerId": "aws-provisioner",
+        "workerType": "gaia",
+        "scopes": [],
+        "payload": {
+          "command": [
+            "/bin/bash",
+            "-c",
+            "echo \"Hello World\"; exit 1;"
+          ]
+        },
+        "extra": {
+          "treeherder": {
+            "symbol": "A"
+          }
+        }
+      }
+    }
+  ]
+}
