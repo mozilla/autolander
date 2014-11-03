@@ -51,17 +51,14 @@ module.exports = function *(runtime) {
   var thunkTunnelUrl = thunkify(getTunnelUrl());
   var tunnelUrl = yield thunkTunnelUrl();
 
-  /*
-  // Commented out for testing.
-  // Can uncomment once we figure out the best way to parse DEBUG logging
-  // while running the tests.
   debug('starting the web server and worker');
   var worker = spawn('node', [
       '--harmony',
       './bin/worker',
     ], {
     execArgv: ['--harmony'],
-    stdio: 'pipe'
+    stdio: 'inherit',
+    env: process.env
   });
   childProcesses.push(worker);
 
@@ -70,10 +67,10 @@ module.exports = function *(runtime) {
       './bin/web'
     ], {
     execArgv: ['--harmony'],
-    stdio: 'pipe'
+    stdio: 'inherit',
+    env: process.env
   });
   childProcesses.push(web);
-  */
 
   debug('attaching github hook', tunnelUrl);
   yield runtime.sleep();
