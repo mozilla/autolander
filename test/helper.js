@@ -53,26 +53,30 @@ exports.setup = function *(runtime) {
   var thunkTunnelUrl = thunkify(getTunnelUrl());
   var tunnelUrl = yield thunkTunnelUrl();
 
-  debug('starting the web server and worker');
-  var worker = spawn('node', [
-      '--harmony',
-      './bin/worker',
-    ], {
-    execArgv: ['--harmony'],
-    stdio: 'inherit',
-    env: process.env
-  });
-  childProcesses.push(worker);
+  // Developers can bypass the test server by running tests with NO_SERVER=1 npm test.
+  // This is useful for debugging so you can spin up your own web/worker servers locally.
+  if (!process.env.NO_SERVER) {
+    debug('starting the web server and worker');
+    var worker = spawn('node', [
+        '--harmony',
+        './bin/worker',
+      ], {
+      execArgv: ['--harmony'],
+      stdio: 'inherit',
+      env: process.env
+    });
+    childProcesses.push(worker);
 
-  var web = spawn('node', [
-      '--harmony',
-      './bin/web'
-    ], {
-    execArgv: ['--harmony'],
-    stdio: 'inherit',
-    env: process.env
-  });
-  childProcesses.push(web);
+    var web = spawn('node', [
+        '--harmony',
+        './bin/web'
+      ], {
+      execArgv: ['--harmony'],
+      stdio: 'inherit',
+      env: process.env
+    });
+    childProcesses.push(web);
+  }
 
   debug('attaching github hook', tunnelUrl);
   yield runtime.sleep();
