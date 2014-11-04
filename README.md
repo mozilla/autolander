@@ -1,6 +1,25 @@
 # Autolander
 
-Autolander is a tool which manages continuous integration workflows between Bugzilla and Github. Autolander interacts between several components, some of which are:
+Autolander is a tool which manages continuous integration workflows between Bugzilla and Github. Autolander has several features including:
+
+* Automatic pull request to bugzilla attachment linking.
+* Integrates code for you once the bug has a R+ (from a suggested reviewer) and the checkin-needed keyword.
+* The integration step includes several processes, but here is a quick summary:
+  * Merges code to an integration branch.
+  * The commits are ordered in the order that they are meant to be landed in master.
+  * A taskgraph is submitted to taskcluster for each integration.
+  * If a taskgraph fails, the commit is discarded, and newer commits are re-run on the integration branch.
+  * On a successful taskgraph run, we fast-forward the base branch to the integration commit.
+  * If we can not fast-forward the base branch, we re-create the integration branch from the base branch and replay all integrations on top of it.
+* Autolander will update the bug with the landing commit, and resolve the bug as fixed.
+
+Validations:
+
+* Currently validates that we can find a bug number in the pull request title.
+* TODO: Validate that commits have bug numbers listed.
+* TBD: If we should require a r= in each commit message.
+
+Autolander interacts between several components, some of which are:
 
 * Bugzilla - Attaches pull requests and comments on bugs.
 * Github - Listens for webhooks, and lands code.
@@ -29,6 +48,10 @@ npm test
 
 # Run a single test:
 ./test/runone.sh test/some_test.js
+
+# Each test will automatically spin up the worker and web servers by default.
+# It can be useful to run these on your own for debugging purposes. Pass NO_SERVER=1 if you do this.
+NO_SERVER=1 npm test
 ```
 
 
