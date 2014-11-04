@@ -11,6 +11,7 @@ var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
 var branchFromMaster = require('./support/branch_from_master');
 var getPullRequest = require('./support/get_pull_request');
+var getStatusesFromBranchTip = require('./support/get_statuses_from_branch_tip');
 var reviewAttachment = require('./support/review_attachment');
 var setCheckinNeeded = require('./support/set_checkin_needed');
 var waitForAttachments = require('./support/wait_for_attachments');
@@ -79,5 +80,11 @@ suite('taskgraph failure > ', function() {
 
     // The second pull request should be merged eventually.
     yield waitForLandingComment(runtime, bug2.id);
+
+    // The first pull request should have some statuses.
+    var statuses = yield getStatusesFromBranchTip(runtime, 'autolander', 'autolander-test', 'branch1');
+    assert.equal(statuses.length, 2);
+    assert.equal(statuses[0].state, 'failure');
+    assert.equal(statuses[1].state, 'pending');
   }));
 });

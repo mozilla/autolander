@@ -38,7 +38,7 @@ module.exports = {
   },
   treeherderConfig: {
     name: 'gaia-try',
-    baseUrl: ENV('TREEHERDER_URL') || 'https://treeherder.mozilla.org/api/',
+    baseUrl: ENV('TREEHERDER_URL') || 'https://treeherder.mozilla.org/',
     consumerKey: ENV('TREEHERDER_KEY'),
     consumerSecret: ENV('TREEHERDER_SECRET')
   }
