@@ -6,6 +6,28 @@ var Scheduler = require('taskcluster-client').Scheduler;
 var thunkify = require('thunkify');
 
 /**
+ * Updates the github status API.
+ * @param {Object} runtime
+ * @param {Object} params The params object from the taskgraph tags. See taskgraph.js.
+ * @param {String} status
+ */
+var updateStatus = function * (runtime, params, status) {
+  var createStatus = thunkify(runtime.githubApi.statuses.create.bind(runtime.githubApi.statuses));
+  var status = yield createStatus({
+    user: params.githubBaseUser,
+    repo: params.githubBaseRepo,
+    sha: params.githubHeadRevision,
+    state: status,
+    description: 'Autolander status is ' + status,
+    context: 'autolander',
+    target_url: params.treeherderUrl,
+    token: runtime.config.githubConfig.token
+  });
+  debug('set status', status);
+  return status;
+};
+
+/**
  * Called when we receive an update for a taskgraph.
  * @param {Object} runtime
  * @param {Object} detail The update object from pulse.
@@ -36,11 +58,19 @@ module.exports = function(runtime) {
     var params = JSON.parse(taskInfo.tags.params);
     var bugId = pullInfo.bugId;
 
+    params.treeherderUrl = runtime.config.treeherderConfig.baseUrl + 'ui/#/jobs?repo=gaia-try&revision=' + revisionInfo[0].revision;
+
     switch (detail.payload.status.state) {
       case 'running':
         debug('task is running');
+
+        // Update the github status API.
+        yield updateStatus(runtime, params, 'pending');
         break;
       case 'finished':
+        // Update the github status API.
+        yield updateStatus(runtime, params, 'success');
+
         // Merge into the base branch if the run is successful.
         try {
           var merge = thunkify(runtime.githubApi.repos.merge.bind(runtime.githubApi.repos));
@@ -81,6 +111,9 @@ module.exports = function(runtime) {
 
         yield bugzilla.removeCheckinNeeded(runtime, bugId);
         yield rebuildIntegrationBranch(runtime, bugId, revisionInfo, pullInfo, params);
+
+        // Update the github status API.
+        yield updateStatus(runtime, params, 'failure');
         break;
     }
   };
