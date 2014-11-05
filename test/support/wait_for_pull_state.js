@@ -21,5 +21,5 @@ module.exports = function * (runtime, user, repo, branch, state) {
     }
     yield runtime.sleep(WAIT_INTERVAL);
   }
-  throw new Error('Cound not find pull request comment.');
+  throw new Error('Cound not find pull request state. Looking for ' + state);
 };
