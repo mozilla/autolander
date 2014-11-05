@@ -25,7 +25,7 @@ suite('validates pull request title > ', function() {
     var bug = yield createBug(runtime);
     var ref = yield branchFromMaster(runtime, 'branch1');
 
-    yield commitToBranch(runtime, 'branch1', 'tc_success/empty');
+    yield commitToBranch(runtime, 'branch1', 'tc_success/empty', 'Bug ' + bug.id + ' - add file');
     var pull = yield createPullRequest(runtime, 'branch1', 'master', 'some invalid title');
 
     var comments = yield waitForPullComments(runtime, 'autolander', 'autolander-test', pull.number);

@@ -36,8 +36,8 @@ suite('pull request which can not be applied to the integration branch > ', func
     yield branchFromMaster(runtime, 'branch1');
     yield branchFromMaster(runtime, 'branch2');
 
-    yield commitContent(runtime, 'branch1', 'foo.txt', 'bar');
-    yield commitContent(runtime, 'branch2', 'foo.txt', 'baz');
+    yield commitContent(runtime, 'branch1', 'foo.txt', 'bar', 'Bug ' + bug1.id + ' - add foo.txt');
+    yield commitContent(runtime, 'branch2', 'foo.txt', 'baz', 'Bug ' + bug2.id + ' - update foo.txt');
 
     var pull1 = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug1.id + ' - mergeable');
     var attachments1 = yield waitForAttachments(runtime, bug1.id);

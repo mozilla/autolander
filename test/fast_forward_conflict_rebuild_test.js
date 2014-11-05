@@ -43,7 +43,7 @@ suite('fast forward conflict > ', function() {
     var bug1 = yield createBug(runtime);
 
     yield branchFromMaster(runtime, 'branch1');
-    yield commitContent(runtime, 'branch1', 'foo.txt', 'foo');
+    yield commitContent(runtime, 'branch1', 'foo.txt', 'foo', 'Bug ' + bug1.id + ' - add foo.txt');
     var pullSlow = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug1.id + ' - expecting a conflict on fast-forward');
     var attachments1 = yield waitForAttachments(runtime, bug1.id);
     yield reviewAttachment(runtime, attachments1[0]);

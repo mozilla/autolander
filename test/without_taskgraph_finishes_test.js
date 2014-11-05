@@ -29,10 +29,10 @@ suite('repo without taskgraph > ', function() {
   test('patch is autolanded', co(function * () {
     var bug = yield createBug(runtime);
 
-    yield commitContent(runtime, 'master', 'foo.txt', 'foo');
+    yield commitContent(runtime, 'master', 'foo.txt', 'foo', 'Bug ' + bug.id + ' - add foo.txt');
     yield branchFromMaster(runtime, 'branch1');
 
-    yield commitContent(runtime, 'branch1', 'foo.txt', 'bar');
+    yield commitContent(runtime, 'branch1', 'foo.txt', 'bar', 'Bug ' + bug.id + ' - update foo.txt');
     var pull = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug.id + ' - integration test');
 
     var attachments = yield waitForAttachments(runtime, bug.id);

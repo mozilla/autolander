@@ -41,8 +41,8 @@ suite('multiple pull requests > ', function() {
     yield branchFromMaster(runtime, 'branch1');
     yield branchFromMaster(runtime, 'branch2');
 
-    yield commitContent(runtime, 'branch1', 'foo.txt', 'foo');
-    yield commitContent(runtime, 'branch2', 'bar.txt', 'bar');
+    yield commitContent(runtime, 'branch1', 'foo.txt', 'foo', 'Bug ' + bug.id + ' - add foo.txt');
+    yield commitContent(runtime, 'branch2', 'bar.txt', 'bar', 'Bug ' + bug.id + ' - add bar.txt');
 
     var pull1 = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug.id + ' - foo');
     var attachments1 = yield waitForAttachments(runtime, bug.id);
