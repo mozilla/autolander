@@ -5,6 +5,7 @@ var fs = require('fs');
 var jsTemplate = require('json-templater/object');
 var slugid = require('slugid');
 
+var checkMergeCommit = require('./support/check_merge_commit');
 var commitContent = require('./support/commit_content');
 var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
@@ -90,6 +91,6 @@ suite('fast forward coalesce > ', function() {
     // One original commit, and two from each branch including the merges to the integration branch.
     var commits = yield getCommits(runtime, 'autolander', 'autolander-test');
     assert.equal(commits.length, 5);
-    assert.equal(commits[0].commit.message, 'Merge branch2 into integration-master');
+    checkMergeCommit(commits[0].commit.message, 'branch2');
   }));
 });

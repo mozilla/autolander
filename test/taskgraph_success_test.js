@@ -5,6 +5,7 @@ var helper = require('./helper');
 var jsTemplate = require('json-templater/object');
 var slugid = require('slugid');
 
+var checkMergeCommit = require('./support/check_merge_commit');
 var commitContent = require('./support/commit_content');
 var commitToBranch = require('./support/commit_to_branch');
 var createBug = require('./support/create_bug');
@@ -73,6 +74,6 @@ suite('taskgraph success > ', function() {
     // Eventually we would like to fast-forward the integration branch, so this would only be 2 commits.
     var commits = yield getCommits(runtime, 'autolander', 'autolander-test');
     assert.equal(commits.length, 3);
-    assert.equal(commits[0].commit.message, 'Merge branch1 into integration-master');
+    checkMergeCommit(commits[0].commit.message, 'branch1');
   }));
 });

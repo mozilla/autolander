@@ -9,6 +9,7 @@ var commitContent = require('./support/commit_content');
 var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
 var branchFromMaster = require('./support/branch_from_master');
+var checkMergeCommit = require('./support/check_merge_commit');
 var getCommits = require('./support/get_commits');
 var reviewAttachment = require('./support/review_attachment');
 var setCheckinNeeded = require('./support/set_checkin_needed');
@@ -66,6 +67,6 @@ suite('fast forward conflict > ', function() {
     // Two commits in master, and two from the branch including the merge to the integration branch.
     var commits = yield getCommits(runtime, 'autolander', 'autolander-test');
     assert.equal(commits.length, 4);
-    assert.equal(commits[0].commit.message, 'Merge branch1 into integration-master');
+    checkMergeCommit(commits[0].commit.message, 'branch1');
   }));
 });
