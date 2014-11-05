@@ -54,7 +54,7 @@ suite('taskgraph failure > ', function() {
     var bug2 = yield createBug(runtime);
 
     yield branchFromMaster(runtime, 'branch1');
-    yield commitContent(runtime, 'branch1', 'foo.txt', 'bar');
+    yield commitContent(runtime, 'branch1', 'foo.txt', 'bar', 'Bug ' + bug1.id + ' - add foo.txt');
 
     // Submit the pull request which will fail.
     var pull1 = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug1.id + ' - Autolander test failed taskgraph');
@@ -66,7 +66,7 @@ suite('taskgraph failure > ', function() {
     // Submit a new pull request, which should be merged.
     // We change the taskgraph in the branch to be the success case.
     yield branchFromMaster(runtime, 'branch2');
-    yield commitContent(runtime, 'branch2', 'taskgraph.json', taskgraphSuccess);
+    yield commitContent(runtime, 'branch2', 'taskgraph.json', taskgraphSuccess, 'Bug ' + bug2.id + ' - add successful taskgraph');
 
     var pull2 = yield createPullRequest(runtime, 'branch2', 'master', 'Bug ' + bug2.id + ' - Autolander success taskgraph');
     var attachments = yield waitForAttachments(runtime, bug2.id);

@@ -53,7 +53,7 @@ suite('fast forward coalesce > ', function() {
 
     // Submit the "slow" pull request.
     yield branchFromMaster(runtime, 'branch1');
-    yield commitContent(runtime, 'branch1', 'foo.txt', 'bar');
+    yield commitContent(runtime, 'branch1', 'foo.txt', 'bar', 'Bug ' + bug1.id + ' - add foo.txt');
     var pullSlow = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug1.id + ' - slow taskgraph - success to be coalesced');
     var attachments1 = yield waitForAttachments(runtime, bug1.id);
     yield reviewAttachment(runtime, attachments1[0]);
@@ -64,7 +64,7 @@ suite('fast forward coalesce > ', function() {
 
     // Submit the "fast" pull request, which should pass first.
     yield branchFromMaster(runtime, 'branch2');
-    yield commitContent(runtime, 'branch2', 'taskgraph.json', taskgraphFastSuccess);
+    yield commitContent(runtime, 'branch2', 'taskgraph.json', taskgraphFastSuccess, 'Bug ' + bug2.id + ' - add fast taskgraph success');
     yield createPullRequest(runtime, 'branch2', 'master', 'Bug ' + bug2.id + ' - Autolander success taskgraph');
 
     var attachments2 = yield waitForAttachments(runtime, bug2.id);

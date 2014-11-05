@@ -8,7 +8,7 @@ var thunkify = require('thunkify');
  * @param {String} path Relative path of the file from the fixtures folder.
  * @seealso https://developer.github.com/v3/repos/contents/#create-a-file
  */
-module.exports = function * (runtime, branch, path) {
+module.exports = function * (runtime, branch, path, message) {
 
   // The leafName is used for the commit message.
   var leafName = path.split('/').pop();
@@ -26,7 +26,7 @@ module.exports = function * (runtime, branch, path) {
   yield createFile({
     user: 'autolander',
     repo: 'autolander-test',
-    message: 'Autolander test content, add ' + leafName,
+    message: message || 'Autolander test content, add ' + leafName,
     path: repoPath,
     content: content,
     branch: branch || 'master',

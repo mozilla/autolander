@@ -25,7 +25,7 @@ suite('attaches to bug > ', function() {
     var bug = yield createBug(runtime);
     var ref = yield branchFromMaster(runtime, 'branch1');
 
-    yield commitToBranch(runtime, 'branch1', 'tc_success/empty');
+    yield commitToBranch(runtime, 'branch1', 'tc_success/empty', 'Bug ' + bug.id + ' - add file');
     var pull = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug.id + ' - integration test');
 
     var attachments = yield waitForAttachments(runtime, bug.id);
