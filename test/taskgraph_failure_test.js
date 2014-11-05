@@ -43,6 +43,12 @@ suite('taskgraph failure > ', function() {
       taskId: slugid.v4()
     });
 
+    // Give the failure case a bit more time to complete first by adding an additional sleep.
+    // In an ideal world we would control the taskgraph state explicitly and tell this when to pass.
+    taskgraphSuccess = JSON.parse(taskgraphSuccess);
+    taskgraphSuccess.tasks[0].task.payload.command[2] = "sleep 50s && echo \"Hello World\";"
+    taskgraphSuccess = JSON.stringify(taskgraphSuccess);
+
     yield commitContent(runtime, 'master', 'taskgraph.json', taskgraphFailure);
     var bug1 = yield createBug(runtime);
     var bug2 = yield createBug(runtime);

@@ -9,6 +9,7 @@ var commitContent = require('./support/commit_content');
 var commitToBranch = require('./support/commit_to_branch');
 var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
+var getCommits = require('./support/get_commits');
 var getReference = require('./support/get_reference');
 var getStatusesFromBranchTip = require('./support/get_statuses_from_branch_tip');
 var branchFromMaster = require('./support/branch_from_master');
@@ -66,5 +67,12 @@ suite('taskgraph success > ', function() {
     // The integration branch should go away after a successful integration.
     var integrationBranch = yield getReference(runtime, 'autolander', 'autolander-test', 'integration-master');
     assert.equal(integrationBranch, null);
+
+    // The master branch should have three commits:
+    // One original commit, one from the branch, and one branch -> integration branch merge.
+    // Eventually we would like to fast-forward the integration branch, so this would only be 2 commits.
+    var commits = yield getCommits(runtime, 'autolander', 'autolander-test');
+    assert.equal(commits.length, 3);
+    assert.equal(commits[0].commit.message, 'Merge branch1 into integration-master');
   }));
 });
