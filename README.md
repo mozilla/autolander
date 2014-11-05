@@ -15,9 +15,9 @@ Autolander is a tool which manages continuous integration workflows between Bugz
 
 Validations:
 
-* Currently validates that we can find a bug number in the pull request title.
-* TODO: Validate that commits have bug numbers listed.
-* TBD: If we should require a r= in each commit message.
+* Pull request titles - a bug number is required in the pull request title.
+* Commit messages - Each commit message in the pull request must have a bug number.
+* TBD: If we should require a r= in each commit message (we may be able to include this info in the future from the bug automatically).
 
 Autolander interacts between several components, some of which are:
 
