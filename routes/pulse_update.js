@@ -43,8 +43,19 @@ module.exports = function(runtime) {
     }
 
     // If the bug does not have checkin-needed, return
-    if (bug.keywords.indexOf('checkin-needed')) {
+    if (bug.keywords.indexOf('checkin-needed') === -1) {
       debug('Bug does not have checkin-needed.', bugId);
+      return;
+    }
+
+    // If we are monitoring this bug and it's got checkin-needed, but in an un-supported product,
+    // do not allow auto-landing.  This is a temporary validation while we audit and re-define
+    // the process for becoming a suggested reviewer.
+    // Once bug 1094926 is fixed, we can remove this validation.
+    debug('bug is:', bug);
+    var supportedProducts = runtime.config.bugzillaSupportedProducts.split(',');
+    if (supportedProducts.indexOf(bug.product) === -1) {
+      debug('Bug is not in a supported product', bug.product);
       return;
     }
 

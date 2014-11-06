@@ -22,6 +22,9 @@ module.exports = {
     username: ENV('BUGZILLA_EMAIL'),
     password: ENV('BUGZILLA_PASSWORD')
   },
+  // Comma seperated list of supported products.
+  // Should be removed once bug 1094926 is fixed.
+  bugzillaSupportedProducts: ENV('BUGZILLA_SUPPORTED_PRODUCTS') || 'Firefox OS',
   pulseConfig: {
     url: 'amqp://public:public@pulse.mozilla.org',
     queueName: 'gaia-autolander-prod',
