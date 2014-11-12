@@ -50,7 +50,12 @@ npm test
 ./test/runone.sh test/some_test.js
 
 # Each test will automatically spin up the worker and web servers by default.
-# It can be useful to run these on your own for debugging purposes. Pass NO_SERVER=1 if you do this.
+# It can be useful to run these on your own for debugging purposes.
+# To do this, first spin up the web and worker instances.
+DEBUG=* ./bin/web
+DEBUG=* ./bin/worker
+
+# Run tests with NO_SERVER=1 if you do this.
 NO_SERVER=1 npm test
 ```
 
