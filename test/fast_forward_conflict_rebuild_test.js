@@ -32,9 +32,6 @@ suite('fast forward conflict > ', function() {
   }));
 
   test('retries after fast-forward conflict', co(function * () {
-    // Make a slow taskgraph which might not even finish before the test is done.
-    // The result of this one does't really matter, we just care that the success
-    // case and commenting is done in the case of a coalesce.
     var taskgraph = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraph = jsTemplate(taskgraph, {
       taskId: slugid.v4()
