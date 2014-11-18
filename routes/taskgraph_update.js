@@ -55,7 +55,7 @@ module.exports = function(runtime) {
 
     var revisionInfo = JSON.parse(taskInfo.tags.revisions);
     var params = JSON.parse(taskInfo.tags.params);
-    var bugId = params.bugId;
+    var bugId = parseInt(taskInfo.tags.bugId, 10);
 
     params.treeherderUrl = runtime.config.treeherderConfig.baseUrl + 'ui/#/jobs?repo=gaia-try&revision=' + revisionInfo[0].revision;
 
