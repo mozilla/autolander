@@ -49,12 +49,14 @@ suite('multiple pull requests > ', function() {
     yield reviewAttachment(runtime, attachments1[0]);
     yield setCheckinNeeded(runtime, bug.id);
     yield waitForCheckinNeededRemoved(runtime, bug.id);
+    yield waitForLandingComment(runtime, bug.id, 1);
 
     var pull2 = yield createPullRequest(runtime, 'branch2', 'master', 'Bug ' + bug.id + ' - bar');
     attachments = yield waitForAttachments(runtime, bug.id, 2);
     yield reviewAttachment(runtime, attachments[1]);
     yield setCheckinNeeded(runtime, bug.id);
     yield waitForCheckinNeededRemoved(runtime, bug.id);
+    yield waitForLandingComment(runtime, bug.id, 2);
 
     // Assert that both pull requests are merged.
     pull1 = yield getPullRequest(runtime, 'autolander', 'autolander-test', pull1.number);

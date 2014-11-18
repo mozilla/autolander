@@ -15,14 +15,20 @@ function sleep(n) {
  * Waits for a landing comment in a bug.
  * @param {Object} runtime
  * @param {Number} bugId
+ * @param {Number} num The number of landing comments to look for.
  */
-module.exports = function * (runtime, bugId) {
+module.exports = function * (runtime, bugId, num) {
   var tries = 0;
+  num = num || 1;
   while (tries++ < MAX_TRIES) {
     var comments = yield getBugComments(runtime, bugId);
     if (comments.length) {
+      var found = 0;
       for (var i = 0; i < comments.length; i++) {
         if (comments[i].text.indexOf(LOOK_FOR) !== -1) {
+          found++;
+        }
+        if (found >= num) {
           return comments;
         }
       }
