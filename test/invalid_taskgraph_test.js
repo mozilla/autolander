@@ -50,12 +50,12 @@ suite('invalid taskgraph > ', function() {
     // The invalid tc case should fail.
     yield waitForCheckinNeededRemoved(runtime, bug.id);
 
-    // The pull request should not be merged.
-    pull1 = yield getPullRequest(runtime, 'autolander', 'autolander-test', pull.number);
-    assert.equal(pull1.merged, false);
-
     // We should comment on the bug.
     var lookForComment = require('./../lib/github').COMMENTS.TASKGRAPH_POST_ERROR;
     yield waitForBugComment(runtime, bug.id, lookForComment);
+
+    // The pull request should not be merged.
+    pull1 = yield getPullRequest(runtime, 'autolander', 'autolander-test', pull.number);
+    assert.equal(pull1.merged, false);
   }));
 });

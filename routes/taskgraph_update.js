@@ -54,9 +54,8 @@ module.exports = function(runtime) {
     }
 
     var revisionInfo = JSON.parse(taskInfo.tags.revisions);
-    var pullInfo = JSON.parse(taskInfo.tags.pull);
     var params = JSON.parse(taskInfo.tags.params);
-    var bugId = pullInfo.bugId;
+    var bugId = parseInt(taskInfo.tags.bugId, 10);
 
     params.treeherderUrl = runtime.config.treeherderConfig.baseUrl + 'ui/#/jobs?repo=gaia-try&revision=' + revisionInfo[0].revision;
 
@@ -96,22 +95,22 @@ module.exports = function(runtime) {
 
           // If we could not update the reference it means that the base branch has changed.
           // Rebuild the integration branch in this case, with all active jobs.
-          yield rebuildIntegrationBranch(runtime, null, revisionInfo, pullInfo, params);
+          yield rebuildIntegrationBranch(runtime, null, revisionInfo, params);
 
           return;
         }
         debug('reference updated', ref)
 
-        yield notifyCoalescedBugs(runtime, bugId, pullInfo.number);
+        yield notifyCoalescedBugs(runtime, bugId, params.githubPullNumber);
         break;
       case 'blocked':
         // Comment on bugzilla and github.
         var comment = 'http://docs.taskcluster.net/tools/task-graph-inspector/#' + detail.payload.status.taskGraphId + '\n\n' + github.COMMENTS.CI_FAILED;
         yield bugzilla.addCiFailedComment(runtime, bugId, comment);
-        yield github.addComment(runtime, pullInfo.user, pullInfo.repo, pullInfo.number, comment);
+        yield github.addComment(runtime, params.githubBaseUser, params.githubBaseRepo, params.githubPullNumber, comment);
 
         yield bugzilla.removeCheckinNeeded(runtime, bugId);
-        yield rebuildIntegrationBranch(runtime, taskGraphId, revisionInfo, pullInfo, params);
+        yield rebuildIntegrationBranch(runtime, taskGraphId, revisionInfo, params);
 
         // Update the github status API.
         yield updateStatus(runtime, params, 'failure');
@@ -143,10 +142,9 @@ var removeIntegrationTracking = function(runtime, taskgraphId) {
  * @param {Object} runtime
   * @param {String} taskgraphIdToRemove
  * @param {Object} revisionInfo
- * @param {Object} pullInfo
  * @param {Object} params
  */
-var rebuildIntegrationBranch = function * (runtime, taskgraphIdToRemove, revisionInfo, pullInfo, params) {
+var rebuildIntegrationBranch = function * (runtime, taskgraphIdToRemove, revisionInfo, params) {
 
   // Reset taskgraphIds and integrations that we care about.
   runtime.bugStore.activeTaskGraphIds = {};
@@ -189,10 +187,18 @@ var rebuildIntegrationBranch = function * (runtime, taskgraphIdToRemove, revisio
   runtime.bugStore.activeIntegrations = [];
 
   for (var i = 0; i < toIntegrate.length; i++) {
-    var eachBug = toIntegrate[i].bugId;
-    yield bzPulse({
-      id: eachBug
+    var eachBugId = toIntegrate[i].bugId;
+    var params = toIntegrate[i].params;
+
+    var getPullRequest = thunkify(runtime.githubApi.pullRequests.get.bind(runtime.githubApi.pullRequests));
+    var pull = yield getPullRequest({
+      user: params.githubBaseUser,
+      repo: params.githubBaseRepo,
+      number: params.githubPullNumber,
+      token: runtime.config.githubConfig.token
     });
+
+    yield github.integratePullRequest(runtime, eachBugId, pull);
   }
 }
 

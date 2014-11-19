@@ -2,7 +2,7 @@ var getStatusesFromBranchTip = require('./get_statuses_from_branch_tip');
 var Promise = require('promise');
 
 var WAIT_INTERVAL = 5000;
-var MAX_TRIES = 20;
+var MAX_TRIES = 100;
 
 /**
  * Waits for a pull request to have a certain status.
