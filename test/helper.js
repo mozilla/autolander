@@ -45,7 +45,7 @@ exports.setup = function *(runtime) {
   try {
     yield deleteRepo(runtime, 'autolander');
   } catch(e) {
-    debug('could not delete repo');
+    debug('could not delete repo', e);
   }
 
   debug('creating autolander-test repoitory');
