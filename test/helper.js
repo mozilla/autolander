@@ -9,12 +9,7 @@ var thunkify = require('thunkify');
 debug('test setup');
 
 var childProcesses = [];
-
-function killChildProcesses() {
-  childProcesses.forEach(function(child) {
-    child.kill();
-  });
-}
+var childServers = [];
 
 process.on('exit', killChildProcesses);
 
@@ -38,6 +33,64 @@ function getTunnelUrl() {
   };
 }
 
+/**
+ * Kills all running child processes.
+ */
+function killChildProcesses() {
+  debug('killing all child processes');
+  childProcesses.forEach(function(child) {
+    child.kill();
+  });
+  childProcesses = [];
+  childServers = [];
+};
+
+/**
+ * Starts the two necessary servers to run the tests.
+ * Both the web and worker servers are started as a child process.
+ */
+exports.startTestServers = function() {
+    debug('starting the web server and worker');
+    var worker = spawn('node', [
+        '--harmony',
+        './bin/worker',
+      ], {
+      execArgv: ['--harmony'],
+      stdio: 'inherit',
+      env: process.env
+    });
+    childProcesses.push(worker);
+    childServers.push(worker);
+
+    var web = spawn('node', [
+        '--harmony',
+        './bin/web'
+      ], {
+      execArgv: ['--harmony'],
+      stdio: 'inherit',
+      env: process.env
+    });
+    childProcesses.push(web);
+    childServers.push(web);
+};
+
+/**
+ * Kills all running child servers.
+ * This kills the web and worker servers.
+ */
+exports.killTestServers = function() {
+  debug('killing all test servers');
+  childServers.forEach(function(child) {
+    // Remove the server process from being tracked in the master childProcesses list.
+    var childProcessesIdx = childProcesses.indexOf(child);
+    childProcesses.splice(childProcessesIdx, 1);
+
+    // Kill the child server.
+    child.kill();
+  });
+  childServers = [];
+};
+
 exports.setup = function *(runtime) {
 
   // Try to start from a clean slate.
@@ -56,26 +109,7 @@ exports.setup = function *(runtime) {
   // Developers can bypass the test server by running tests with NO_SERVER=1 npm test.
   // This is useful for debugging so you can spin up your own web/worker servers locally.
   if (!process.env.NO_SERVER) {
-    debug('starting the web server and worker');
-    var worker = spawn('node', [
-        '--harmony',
-        './bin/worker',
-      ], {
-      execArgv: ['--harmony'],
-      stdio: 'inherit',
-      env: process.env
-    });
-    childProcesses.push(worker);
-
-    var web = spawn('node', [
-        '--harmony',
-        './bin/web'
-      ], {
-      execArgv: ['--harmony'],
-      stdio: 'inherit',
-      env: process.env
-    });
-    childProcesses.push(web);
+    exports.startTestServers();
   }
 
   debug('attaching github hook', tunnelUrl);
