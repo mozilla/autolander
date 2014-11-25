@@ -26,8 +26,8 @@ module.exports = {
   // Should be removed once bug 1094926 is fixed.
   bugzillaSupportedProducts: ENV('BUGZILLA_SUPPORTED_PRODUCTS') || 'Firefox OS',
   pulseConfig: {
-    url: 'amqp://public:public@pulse.mozilla.org',
-    queueName: 'gaia-autolander-prod',
+    url: 'amqps://' + ENV('TC_PULSE_USER') + ':' + ENV('TC_PULSE_PASSWORD') + '@pulse.mozilla.org:5671',
+    queueName: 'queue/' + ENV('TC_PULSE_USER') + '/gaia-autolander-prod',
     exchange: 'exchange/bugzilla/simple'
   },
   taskclusterConfig: {
