@@ -1,5 +1,5 @@
+var azureTable = require('azure-table-node');
 var config = require('./../../config/development');
-var bugStore = require('./../../lib/bug_store');
 var bugzilla = require('./../../lib/bugzilla');
 var github = require('./../../lib/github');
 
@@ -9,9 +9,16 @@ var Promise = require('promise');
  * A runtime for testing for ease of including.
  */
 module.exports = function * () {
+
+  azureTable.setDefaultClient(config.azureConfig);
+  var azureApi = azureTable.getDefaultClient();
+  var bugStore = require('./../../lib/store/bug');
+  var activeStore = require('./../../lib/store/active');
+
   return {
     config: config,
-    bugStore: yield bugStore.init(config),
+    activeStore: yield activeStore.init(config, azureApi),
+    bugStore: yield bugStore.init(config, azureApi),
     githubApi: yield github.init(config),
     bugzillaApi: yield bugzilla.init(config),
 

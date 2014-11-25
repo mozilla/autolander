@@ -48,14 +48,15 @@ module.exports = function(runtime) {
     debug('scheduler info', taskInfo);
     debug(Date.now());
 
-    if (!runtime.bugStore.activeTaskGraphIds[taskGraphId]) {
-      debug('could not find active taskGraphId', taskGraphId);
-      return;
-    }
-
     var revisionInfo = JSON.parse(taskInfo.tags.revisions);
     var params = JSON.parse(taskInfo.tags.params);
     var bugId = parseInt(taskInfo.tags.bugId, 10);
+
+    var isIntegrating = yield runtime.activeStore.isTaskgraphIntegrating(params.githubBaseUser, params.githubBaseRepo, taskGraphId);
+    if (!isIntegrating) {
+      debug('could not find active taskGraphId', taskGraphId);
+      return;
+    }
 
     params.treeherderUrl = runtime.config.treeherderConfig.baseUrl + 'ui/#/jobs?repo=gaia-try&revision=' + revisionInfo[0].revision;
 
@@ -101,7 +102,7 @@ module.exports = function(runtime) {
         }
         debug('reference updated', ref)
 
-        yield notifyCoalescedBugs(runtime, bugId, params.githubPullNumber);
+        yield notifyCoalescedBugs(runtime, params);
         break;
       case 'blocked':
         // Comment on bugzilla and github.
@@ -120,24 +121,6 @@ module.exports = function(runtime) {
 };
 
 /** 
- * Removes a job from the currently in-progress taskgraph runs.
- * @param {Object} runtime
- * @param {String} taskgraphId
- */
-var removeIntegrationTracking = function(runtime, taskgraphId) {
-  for (var i = 0; i < runtime.bugStore.activeIntegrations.length; i++) {
-    var job = runtime.bugStore.activeIntegrations[i];
-    if (job.taskgraphId === taskgraphId) {
-      runtime.bugStore.activeIntegrations.splice(i, 1);
-      debug('removing active bug from queue', taskgraphId, 'found at index', i);
-      debug('remaining active bugs', runtime.bugStore.activeIntegrations);
-    }
-  }
-  delete runtime.bugStore.activeTaskGraphIds[taskgraphId];
-}
-
-
-/** 
  * Rebuilds the integration branch after a failed taskgraph.
  * @param {Object} runtime
   * @param {String} taskgraphIdToRemove
@@ -145,9 +128,6 @@ var removeIntegrationTracking = function(runtime, taskgraphId) {
  * @param {Object} params
  */
 var rebuildIntegrationBranch = function * (runtime, taskgraphIdToRemove, revisionInfo, params) {
-
-  // Reset taskgraphIds and integrations that we care about.
-  runtime.bugStore.activeTaskGraphIds = {};
 
   // Remove the integration branch.
   yield removeBranch(runtime, params.githubBaseUser, params.githubBaseRepo, 'integration-' + params.githubBaseBranch);
@@ -177,24 +157,26 @@ var rebuildIntegrationBranch = function * (runtime, taskgraphIdToRemove, revisio
 
   // If we passed in a taskgraphId, remove it.
   if (taskgraphIdToRemove) {
-    removeIntegrationTracking(runtime, taskgraphIdToRemove);
+    yield runtime.activeStore.stopTracking(taskgraphIdToRemove, params);
   }
 
   // Simulate a pulse update for each bug remaining.
   var bzPulse = require('./pulse_update')(runtime);
 
-  var toIntegrate = runtime.bugStore.activeIntegrations;
-  runtime.bugStore.activeIntegrations = [];
+  var toIntegrate = yield runtime.activeStore.getCurrentIntegrations(params.githubBaseUser, params.githubBaseRepo);
 
   for (var i = 0; i < toIntegrate.length; i++) {
-    var eachBugId = toIntegrate[i].bugId;
-    var params = toIntegrate[i].params;
+
+    var integration = toIntegrate[i];
+    var eachBugId = integration.bugId;
+
+    yield runtime.activeStore.stopTracking(integration.RowKey, integration);
 
     var getPullRequest = thunkify(runtime.githubApi.pullRequests.get.bind(runtime.githubApi.pullRequests));
     var pull = yield getPullRequest({
-      user: params.githubBaseUser,
-      repo: params.githubBaseRepo,
-      number: params.githubPullNumber,
+      user: integration.githubBaseUser,
+      repo: integration.githubBaseRepo,
+      number: integration.githubPullNumber,
       token: runtime.config.githubConfig.token
     });
 
@@ -205,42 +187,39 @@ var rebuildIntegrationBranch = function * (runtime, taskgraphIdToRemove, revisio
 /** 
  * Notifys all bugs which may have been merged in a coalesce success.
  * @param {Object} runtime
- * @param {Number} bugId The bug that was merged.
- * @param {Number} pullNumber The pull request number.
+ * @param {Object} params
  */
-var notifyCoalescedBugs = function * (runtime, bugId, pullNumber) {
-
-  // Build a list of bugs to remove from being actively tracked under integration.
-  var jobsToRemove = [];
+var notifyCoalescedBugs = function * (runtime, params) {
 
   // Each bug in our actively tracked integration bugs will be landed.
   // Comment in each bug, and untrack the bugs.
-  for (var i = 0; i < runtime.bugStore.activeIntegrations.length; i++) {
-    var eachJob = runtime.bugStore.activeIntegrations[i];
+  var integrations = yield runtime.activeStore.getCurrentIntegrations(params.githubBaseUser, params.githubBaseRepo);
+  debug('got active integrations', integrations);
+  for (var i = 0; i < integrations.length; i++) {
+    var job = integrations[i];
+    debug('notifying coalesced bug for job', job);
 
     try {
-      var params = eachJob.params;
-      var commitUrl = 'https://github.com/' + params.githubBaseUser + '/' + params.githubBaseRepo + '/commit/' + params.githubHeadRevision;
-      yield bugzilla.addLandingComment(runtime, eachJob.bugId, params.githubBaseBranch, commitUrl);
-      yield bugzilla.removeCheckinNeeded(runtime, eachJob.bugId);
-      yield bugzilla.resolveFix(runtime, eachJob.bugId);
+      var commitUrl = 'https://github.com/' + job.githubBaseUser + '/' + job.githubBaseRepo + '/commit/' + job.githubHeadRevision;
+      yield bugzilla.addLandingComment(runtime, job.bugId, job.githubBaseBranch, commitUrl);
+      yield bugzilla.removeCheckinNeeded(runtime, job.bugId);
+      yield bugzilla.resolveFix(runtime, job.bugId);
     } catch (e) {
-      debug('could not add landing commit', eachJob.bugId, commitUrl);
+      debug('could not add landing commit', job, e);
     }
 
-    jobsToRemove.push(eachJob);
-    if (eachJob.bugId == bugId) {
+    // Stop tracking the task after processing.
+    yield runtime.activeStore.stopTracking(job.RowKey, job);
+
+    if (job.bugId == params.bugId) {
       break;
     }
   }
 
-  // Remove bugs from active integration tracking.
-  jobsToRemove.forEach(function(eachJob) {
-    removeIntegrationTracking(runtime, eachJob.taskgraphId);
-  });
-
   // If there are no more currently integrating bugs, remove the integration branch.
-  if (!runtime.bugStore.activeIntegrations.length) {
+  var remainingIntegrations = yield runtime.activeStore.getCurrentIntegrations(params.githubBaseUser, params.githubBaseRepo);
+  debug('got remainingIntegrations', remainingIntegrations);
+  if (!remainingIntegrations.length) {
     yield removeBranch(runtime, params.githubBaseUser, params.githubBaseRepo, 'integration-' + params.githubBaseBranch);
   }
 };
