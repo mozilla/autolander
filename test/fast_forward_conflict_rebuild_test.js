@@ -8,7 +8,7 @@ var slugid = require('slugid');
 var commitContent = require('./support/commit_content');
 var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
-var branchFromMaster = require('./support/branch_from_master');
+var branchFromRef = require('./support/branch_from_ref');
 var checkMergeCommit = require('./support/check_merge_commit');
 var getCommits = require('./support/get_commits');
 var reviewAttachment = require('./support/review_attachment');
@@ -40,7 +40,7 @@ suite('fast forward conflict > ', function() {
     yield commitContent(runtime, 'master', 'taskgraph.json', taskgraph);
     var bug1 = yield createBug(runtime);
 
-    yield branchFromMaster(runtime, 'branch1');
+    yield branchFromRef(runtime, 'branch1');
     yield commitContent(runtime, 'branch1', 'foo.txt', 'foo', 'Bug ' + bug1.id + ' - add foo.txt');
     var pullSlow = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug1.id + ' - expecting a conflict on fast-forward');
     var attachments1 = yield waitForAttachments(runtime, bug1.id);

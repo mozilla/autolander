@@ -13,7 +13,7 @@ var createPullRequest = require('./support/create_pull_request');
 var getCommits = require('./support/get_commits');
 var getReference = require('./support/get_reference');
 var getStatusesFromBranchTip = require('./support/get_statuses_from_branch_tip');
-var branchFromMaster = require('./support/branch_from_master');
+var branchFromRef = require('./support/branch_from_ref');
 var reviewAttachment = require('./support/review_attachment');
 var setCheckinNeeded = require('./support/set_checkin_needed');
 var waitForAttachments = require('./support/wait_for_attachments');
@@ -43,7 +43,7 @@ suite('taskgraph success > ', function() {
     yield commitContent(runtime, 'master', 'taskgraph.json', taskgraph);
 
     var bug = yield createBug(runtime);
-    var ref = yield branchFromMaster(runtime, 'branch1');
+    var ref = yield branchFromRef(runtime, 'branch1');
 
     yield commitToBranch(runtime, 'branch1', 'tc_success/empty', 'Bug ' + bug.id + ' - add file');
     var pull = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug.id + ' - integration test');

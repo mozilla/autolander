@@ -1,18 +1,21 @@
 var thunkify = require('thunkify');
 
 /**
- * Creates a new branch from the tip of master.
+ * Creates a new branch from the tip of an existing branch.
  * @param {Object} runtime
- * @param {String} name The branch name.
+ * @param {String} name The new branch name.
+ * @param {String} baseBranch=master The name of what we're branching from.
  */
-module.exports = function * (runtime, name) {
+module.exports = function * (runtime, name, baseBranch) {
+
+  baseBranch = baseBranch || 'master';
 
   yield runtime.sleep();
   var getRef = thunkify(runtime.githubApi.gitdata.getReference.bind(runtime.githubApi.gitdata));
-  var masterRef = yield getRef({
+  var baseBranchRef = yield getRef({
     user: 'autolander',
     repo: 'autolander-test',
-    ref: 'heads/master',
+    ref: 'heads/' + baseBranch,
     token: runtime.config.githubConfig.token
   });
 
@@ -22,7 +25,7 @@ module.exports = function * (runtime, name) {
     user: 'autolander',
     repo: 'autolander-test',
     ref: 'refs/heads/' + name,
-    sha: masterRef.object.sha,
+    sha: baseBranchRef.object.sha,
     token: runtime.config.githubConfig.token
   });
 };

@@ -73,22 +73,15 @@ module.exports = function(runtime) {
 
         // Update the base branch reference if successful.
         try {
-          var getRef = thunkify(runtime.githubApi.gitdata.getReference.bind(runtime.githubApi.gitdata));
-          var integrationRef = yield getRef({
-            user: params.githubBaseUser,
-            repo: params.githubBaseRepo,
-            ref: 'heads/integration-' + params.githubBaseBranch,
-            token: runtime.config.githubConfig.token
-          });
           debug('pull request head sha', params.githubHeadRevision);
-          debug('integration branch sha', integrationRef.object.sha);
+          debug('pull request merge sha to integration branch', params.githubPullMergeSha);
 
           var updateReference = thunkify(runtime.githubApi.gitdata.updateReference.bind(runtime.githubApi.gitdata));
           var ref = yield updateReference({
             user: params.githubBaseUser,
             repo: params.githubBaseRepo,
             ref: 'heads/' + params.githubBaseBranch,
-            sha: integrationRef.object.sha,
+            sha: params.githubPullMergeSha,
             token: runtime.config.githubConfig.token
           });
         } catch (e) {

@@ -9,7 +9,7 @@ var commitContent = require('./support/commit_content');
 var commitToBranch = require('./support/commit_to_branch');
 var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
-var branchFromMaster = require('./support/branch_from_master');
+var branchFromRef = require('./support/branch_from_ref');
 var getPullRequest = require('./support/get_pull_request');
 var getStatusesFromBranchTip = require('./support/get_statuses_from_branch_tip');
 var reviewAttachment = require('./support/review_attachment');
@@ -53,7 +53,7 @@ suite('taskgraph failure > ', function() {
     var bug1 = yield createBug(runtime);
     var bug2 = yield createBug(runtime);
 
-    yield branchFromMaster(runtime, 'branch1');
+    yield branchFromRef(runtime, 'branch1');
     yield commitContent(runtime, 'branch1', 'foo.txt', 'bar', 'Bug ' + bug1.id + ' - add foo.txt');
 
     // Submit the pull request which will fail.
@@ -65,7 +65,7 @@ suite('taskgraph failure > ', function() {
 
     // Submit a new pull request, which should be merged.
     // We change the taskgraph in the branch to be the success case.
-    yield branchFromMaster(runtime, 'branch2');
+    yield branchFromRef(runtime, 'branch2');
     yield commitContent(runtime, 'branch2', 'taskgraph.json', taskgraphSuccess, 'Bug ' + bug2.id + ' - add successful taskgraph');
 
     var pull2 = yield createPullRequest(runtime, 'branch2', 'master', 'Bug ' + bug2.id + ' - Autolander success taskgraph');

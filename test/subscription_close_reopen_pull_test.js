@@ -6,7 +6,7 @@ var closePullRequest = require('./support/close_pull_request');
 var commitContent = require('./support/commit_content');
 var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
-var branchFromMaster = require('./support/branch_from_master');
+var branchFromRef = require('./support/branch_from_ref');
 var openPullRequest = require('./support/open_pull_request');
 var reviewAttachment = require('./support/review_attachment');
 var setCheckinNeeded = require('./support/set_checkin_needed');
@@ -34,7 +34,7 @@ suite('subscription > ', function() {
     var bug = yield createBug(runtime);
 
     yield commitContent(runtime, 'master', 'foo.txt', 'foo', 'Bug ' + bug.id + ' - add foo.txt');
-    yield branchFromMaster(runtime, 'branch1');
+    yield branchFromRef(runtime, 'branch1');
 
     yield commitContent(runtime, 'branch1', 'foo.txt', 'bar', 'Bug ' + bug.id + ' - update foo.txt');
     var pull = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug.id + ' - integration test');
