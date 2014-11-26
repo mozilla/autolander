@@ -5,7 +5,7 @@ var helper = require('./helper');
 var commitToBranch = require('./support/commit_to_branch');
 var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
-var branchFromMaster = require('./support/branch_from_master');
+var branchFromRef = require('./support/branch_from_ref');
 var waitForAttachments = require('./support/wait_for_attachments');
 
 suite('attaches to bug > ', function() {
@@ -23,7 +23,7 @@ suite('attaches to bug > ', function() {
   test('creating a pull request', co(function * () {
     yield commitToBranch(runtime, 'master', 'tc_success/taskgraph.json');
     var bug = yield createBug(runtime);
-    var ref = yield branchFromMaster(runtime, 'branch1');
+    var ref = yield branchFromRef(runtime, 'branch1');
 
     yield commitToBranch(runtime, 'branch1', 'tc_success/empty', 'Bug ' + bug.id + ' - add file');
     var pull = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug.id + ' - integration test');

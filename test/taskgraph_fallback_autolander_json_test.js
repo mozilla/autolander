@@ -9,7 +9,7 @@ var commitContent = require('./support/commit_content');
 var commitToBranch = require('./support/commit_to_branch');
 var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
-var branchFromMaster = require('./support/branch_from_master');
+var branchFromRef = require('./support/branch_from_ref');
 var reviewAttachment = require('./support/review_attachment');
 var setCheckinNeeded = require('./support/set_checkin_needed');
 var waitForAttachments = require('./support/wait_for_attachments');
@@ -43,7 +43,7 @@ suite('taskgraph selection > ', function() {
     yield commitContent(runtime, 'master', 'autolander.json', taskgraphSuccess);
     var bug1 = yield createBug(runtime);
 
-    yield branchFromMaster(runtime, 'branch1');
+    yield branchFromRef(runtime, 'branch1');
     yield commitContent(runtime, 'branch1', 'foo.txt', 'bar', 'Bug ' + bug1.id + ' - add foo.txt');
 
     // Submit the pull request which will fail.

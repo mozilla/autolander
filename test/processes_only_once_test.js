@@ -9,7 +9,7 @@ var thunkify = require('thunkify');
 var commitContent = require('./support/commit_content');
 var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
-var branchFromMaster = require('./support/branch_from_master');
+var branchFromRef = require('./support/branch_from_ref');
 
 var getBugComments = require('./support/get_bug_comments');
 var getStatusesFromBranchTip = require('./support/get_statuses_from_branch_tip');
@@ -46,7 +46,7 @@ suite('processing duplicate bug notifications > ', function() {
     yield commitContent(runtime, 'master', 'taskgraph.json', taskgraphFirstSlow);
     var bug = yield createBug(runtime);
 
-    yield branchFromMaster(runtime, 'branch1');
+    yield branchFromRef(runtime, 'branch1');
     yield commitContent(runtime, 'branch1', 'foo.txt', 'foo', 'Bug ' + bug.id + ' - add foo.txt');
     var pullSlow = yield createPullRequest(runtime, 'branch1', 'master', 'Bug ' + bug.id + ' - check that we only process once');
     var attachments1 = yield waitForAttachments(runtime, bug.id);

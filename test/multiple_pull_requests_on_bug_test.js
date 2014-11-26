@@ -8,7 +8,7 @@ var slugid = require('slugid');
 var commitContent = require('./support/commit_content');
 var createBug = require('./support/create_bug');
 var createPullRequest = require('./support/create_pull_request');
-var branchFromMaster = require('./support/branch_from_master');
+var branchFromRef = require('./support/branch_from_ref');
 var getPullRequest = require('./support/get_pull_request');
 var reviewAttachment = require('./support/review_attachment');
 var setCheckinNeeded = require('./support/set_checkin_needed');
@@ -38,8 +38,8 @@ suite('multiple pull requests > ', function() {
     yield commitContent(runtime, 'master', 'taskgraph.json', taskgraph);
     var bug = yield createBug(runtime);
 
-    yield branchFromMaster(runtime, 'branch1');
-    yield branchFromMaster(runtime, 'branch2');
+    yield branchFromRef(runtime, 'branch1');
+    yield branchFromRef(runtime, 'branch2');
 
     yield commitContent(runtime, 'branch1', 'foo.txt', 'foo', 'Bug ' + bug.id + ' - add foo.txt');
     yield commitContent(runtime, 'branch2', 'bar.txt', 'bar', 'Bug ' + bug.id + ' - add bar.txt');
