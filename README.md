@@ -85,3 +85,11 @@ DEBUG=* node --harmony ./bin/web production
 DEBUG=* node --harmony ./bin/worker production
 
 ```
+
+## Enabling Autolander for additional repositories
+
+We don't yet have a UI in place to easily do this, so for the time being, Autolander needs a few things in place to function:
+
+* Add the Autolander user (https://github.com/autolander/) to your repository with permissions.
+* Add the heroku webhook to your repository, and make sure it receives events for pull requests: http://autolander.herokuapp.com/github
+* Until bug 1094926 is finished, the BUGZILLA_SUPPORTED_PRODUCTS configuration value needs to be updated to contain your bugzilla product.
