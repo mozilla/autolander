@@ -18,9 +18,15 @@ module.exports = {
     token: ENV('GITHUB_TOKEN')
   },
   bugzillaConfig: {
-    url: "https://bugzilla.mozilla.org/rest/",
+    url: 'https://bugzilla-dev.allizom.org/rest/',
     username: ENV('BUGZILLA_EMAIL'),
     password: ENV('BUGZILLA_PASSWORD')
+  },
+  // A test user which is not a suggested reviewer of any component.
+  bugzillaTestUser1: {
+    url: 'https://bugzilla-dev.allizom.org/rest/',
+    username: ENV('BUGZILLA_TEST_USERNAME'),
+    password: ENV('BUGZILLA_TEST_PASSWORD')
   },
   // Comma seperated list of supported products.
   // Should be removed once bug 1094926 is fixed.
