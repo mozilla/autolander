@@ -1,5 +1,5 @@
 var assert = require('assert');
-var bz = require('bz');
+var bz = require('kg-bz');
 var co = require('co');
 var helper = require('./helper');
 var thunkify = require('thunkify');
