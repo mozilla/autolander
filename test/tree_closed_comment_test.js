@@ -22,6 +22,8 @@ suite('when tree is closed > ', function() {
   }));
 
   suiteTeardown(co(function * () {
+    delete process.env['GITHUB_USERNAME'];
+    delete process.env['GITHUB_TOKEN'];
     return yield helper.teardown(runtime);
   }));
 
