@@ -15,7 +15,14 @@ module.exports = {
     accountKey: ENV('AZURE_ACCOUNT_KEY')
   },
   githubConfig: {
+    username: ENV('GITHUB_USERNAME'),
     token: ENV('GITHUB_TOKEN')
+  },
+  // A test user and token which does not have access to the autolander-test repo.
+  // This is only used for testing support and does not need to be defined for production.
+  githubTestUser: {
+    username: ENV('GITHUB_TEST_USERNAME'),
+    token: ENV('GITHUB_TEST_TOKEN')
   },
   bugzillaConfig: {
     url: 'https://bugzilla-dev.allizom.org/rest/',
