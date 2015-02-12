@@ -193,7 +193,7 @@ var notifyCoalescedBugs = function * (runtime, params) {
     debug('notifying coalesced bug for job', job);
 
     try {
-      var commitUrl = 'https://github.com/' + job.githubBaseUser + '/' + job.githubBaseRepo + '/commit/' + job.githubHeadRevision;
+      var commitUrl = 'https://github.com/' + job.githubBaseUser + '/' + job.githubBaseRepo + '/commit/' + job.githubPullMergeSha;
       yield bugzilla.addLandingComment(runtime, job.bugId, job.githubBaseBranch, commitUrl);
       yield bugzilla.removeCheckinNeeded(runtime, job.bugId);
       yield bugzilla.resolveFix(runtime, job.bugId);
