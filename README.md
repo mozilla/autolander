@@ -31,11 +31,9 @@ Autolander interacts between several components, some of which are:
 
 ## Configuration
 
-Create configuration if needed. Copy the template config file to the environment (development/production), and fill in the keys. Ask me if you need development keys.
+Create configuration if needed. Copy the template config file to the environment (development or production), and fill in the keys. An example config/production.js file already exists which uses environment defines - this is useful for deploying to a server which already has these defined. Ask me if you need development keys.
 ```
 cp config/development.js.tpl config/development.js
-// Or, if testing/running in production:
-cp config/development.js.tpl config/production.js
 ```
 
 
