@@ -50,7 +50,8 @@ module.exports = {
   },
   taskPulseConfig: {
     username: ENV('TC_PULSE_USER'),
-    password: ENV('TC_PULSE_PASSWORD')
+    password: ENV('TC_PULSE_PASSWORD'),
+    queueName: undefined // Intentionally undefined for dev so the queue will auto-delete.
   },
   treeherderConfig: {
     name: 'gaia-try',
