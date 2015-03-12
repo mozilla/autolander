@@ -4,6 +4,10 @@ function ENV(key) {
 
 module.exports = {
   port: ENV('PORT') || 80,
+  debug: {
+    // Dumps memory usage every 30s.
+    dumpMemoryUsage: false
+  },
   amqpConfig: {
     autoDelete: true,
     exclusive: false,
