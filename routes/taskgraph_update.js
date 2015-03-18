@@ -69,7 +69,11 @@ module.exports = function(runtime) {
         break;
       case 'finished':
         // Update the github status API.
-        yield updateStatus(runtime, params, 'success');
+        try {
+          yield updateStatus(runtime, params, 'success');
+        } catch(e) {
+          debug('could not update status for bug', bugId, params);
+        }
 
         // Update the base branch reference if successful.
         try {
