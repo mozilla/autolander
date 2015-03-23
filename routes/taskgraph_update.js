@@ -160,7 +160,7 @@ var rebuildIntegrationBranch = function * (runtime, taskgraphIdToRemove, revisio
   // Simulate a pulse update for each bug remaining.
   var bzPulse = require('./pulse_update')(runtime);
 
-  var toIntegrate = yield runtime.activeStore.getCurrentIntegrations(params.githubBaseUser, params.githubBaseRepo);
+  var toIntegrate = yield runtime.activeStore.getCurrentIntegrations(params.githubBaseUser, params.githubBaseRepo, params.githubBaseBranch);
 
   for (var i = 0; i < toIntegrate.length; i++) {
 
@@ -190,7 +190,7 @@ var notifyCoalescedBugs = function * (runtime, params) {
 
   // Each bug in our actively tracked integration bugs will be landed.
   // Comment in each bug, and untrack the bugs.
-  var integrations = yield runtime.activeStore.getCurrentIntegrations(params.githubBaseUser, params.githubBaseRepo);
+  var integrations = yield runtime.activeStore.getCurrentIntegrations(params.githubBaseUser, params.githubBaseRepo, params.githubBaseBranch);
   debug('got active integrations', integrations);
   for (var i = 0; i < integrations.length; i++) {
     var job = integrations[i];
@@ -214,7 +214,7 @@ var notifyCoalescedBugs = function * (runtime, params) {
   }
 
   // If there are no more currently integrating bugs, remove the integration branch.
-  var remainingIntegrations = yield runtime.activeStore.getCurrentIntegrations(params.githubBaseUser, params.githubBaseRepo);
+  var remainingIntegrations = yield runtime.activeStore.getCurrentIntegrations(params.githubBaseUser, params.githubBaseRepo, params.githubBaseBranch);
   debug('got remainingIntegrations', remainingIntegrations);
   if (!remainingIntegrations.length) {
     yield removeBranch(runtime, params.githubBaseUser, params.githubBaseRepo, 'integration-' + params.githubBaseBranch);
