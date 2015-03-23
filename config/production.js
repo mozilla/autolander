@@ -49,7 +49,8 @@ module.exports = {
   taskPulseConfig: {
     username: ENV('TC_PULSE_USER'),
     password: ENV('TC_PULSE_PASSWORD'),
-    queueName: ENV('TC_PULSE_QUEUE') || 'gaia-autolander-ci-prod'
+    queueName: ENV('TC_PULSE_QUEUE') || 'gaia-autolander-ci-prod',
+    route: 'gaia-autolander'
   },
   treeherderConfig: {
     name: 'gaia-try',
