@@ -42,13 +42,13 @@ module.exports = function(runtime) {
       return;
     }
 
-    // If the bug does not have checkin-needed, return
-    if (bug.keywords.indexOf('checkin-needed') === -1) {
-      debug('Bug does not have checkin-needed.', bugId);
+    // If the bug does not have autoland, return
+    if (bug.keywords.indexOf('autoland') === -1) {
+      debug('Bug does not have the autoland keyword.', bugId);
       return;
     }
 
-    // If we are monitoring this bug and it's got checkin-needed, but in an un-supported product,
+    // If we are monitoring this bug and it's got autoland, but in an un-supported product,
     // do not allow auto-landing.  This is a temporary validation while we audit and re-define
     // the process for becoming a suggested reviewer.
     // Once bug 1094926 is fixed, we can remove this validation.

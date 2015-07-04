@@ -28,5 +28,5 @@ module.exports = function * (runtime, bugId) {
     }
     yield sleep(WAIT_INTERVAL);
   }
-  throw new Error('Checkin-needed not removed.');
+  throw new Error('Autoland not removed.');
 };

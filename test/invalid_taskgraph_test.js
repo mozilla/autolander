@@ -29,7 +29,7 @@ suite('invalid taskgraph > ', function() {
     return yield helper.teardown(runtime);
   }));
 
-  test('comments on PR and removes checkin-needed', co(function * () {
+  test('comments on PR and removes autoland', co(function * () {
     var taskgraph = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraph = jsTemplate(taskgraph, {
       taskId: slugid.v4()

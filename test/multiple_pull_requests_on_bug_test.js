@@ -29,7 +29,7 @@ suite('multiple pull requests > ', function() {
     return yield helper.teardown(runtime);
   }));
 
-  test('with multiple checkin-needed requests', co(function * () {
+  test('with multiple autoland requests', co(function * () {
     var taskgraph = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraph = jsTemplate(taskgraph, {
       taskId: slugid.v4()

@@ -3,7 +3,7 @@
 Autolander is a tool which manages continuous integration workflows between Bugzilla and Github. Autolander has several features including:
 
 * Automatic pull request to bugzilla attachment linking.
-* Integrates code for you once the bug has a R+ (from a suggested reviewer) and the checkin-needed keyword.
+* Integrates code for you once the bug has a R+ (from a suggested reviewer) and the autoland keyword.
 * The integration step includes several processes, but here is a quick summary:
   * Merges code to an integration branch.
   * The commits are ordered in the order that they are meant to be landed in master.

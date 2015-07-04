@@ -12,7 +12,7 @@ function sleep(n) {
 }
 
 /**
- * Waits for a bug to have the checkin-needed keyword removed.
+ * Waits for a bug to have the autoland keyword removed.
  * @param {Object} runtime
  * @param {Number} bugId
  */
@@ -24,10 +24,10 @@ module.exports = function * (runtime, bugId) {
     var bug = yield getBug(bugId);
 
     debug('keywords', bug.keywords);
-    if (bug.keywords.indexOf('checkin-needed') === -1) {
+    if (bug.keywords.indexOf('autoland') === -1) {
       return true;
     }
     yield sleep(WAIT_INTERVAL);
   }
-  throw new Error('Checkin-needed not removed.');
+  throw new Error('Autoland not removed.');
 };

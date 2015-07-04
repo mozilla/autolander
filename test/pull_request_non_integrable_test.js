@@ -27,7 +27,7 @@ suite('pull request which can not be applied to the integration branch > ', func
     return yield helper.teardown(runtime);
   }));
 
-  test('comments on bug and removes checkin-needed', co(function * () {
+  test('comments on bug and removes autoland', co(function * () {
     yield commitToBranch(runtime, 'master', 'tc_success/taskgraph.json');
     yield commitContent(runtime, 'master', 'foo.txt', 'foo');
     var bug1 = yield createBug(runtime);
