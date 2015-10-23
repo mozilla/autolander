@@ -35,12 +35,12 @@ suite('taskgraph failure > ', function() {
   test('successful patch lands after a failure', co(function * () {
     var taskgraphFailure = fs.readFileSync(__dirname + '/fixtures/tc_failure/taskgraph.json', 'utf-8');
     taskgraphFailure = jsTemplate(taskgraphFailure, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
 
     var taskgraphSuccess = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraphSuccess = jsTemplate(taskgraphSuccess, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
 
     // Give the failure case a bit more time to complete first by adding an additional sleep.

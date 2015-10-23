@@ -32,7 +32,7 @@ suite('multiple pull requests > ', function() {
   test('with multiple autoland requests', co(function * () {
     var taskgraph = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraph = jsTemplate(taskgraph, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
 
     yield commitContent(runtime, 'master', 'taskgraph.json', taskgraph);

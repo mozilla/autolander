@@ -37,7 +37,7 @@ suite('taskgraph success > ', function() {
   test('patch is autolanded', co(function * () {
     var taskgraph = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraph = jsTemplate(taskgraph, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
 
     yield commitContent(runtime, 'master', 'taskgraph.json', taskgraph);

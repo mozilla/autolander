@@ -38,7 +38,7 @@ suite('active integration store > ', function() {
   test('persists active taskgraphs after a server restart', co(function * () {
     var taskgraph = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraph = jsTemplate(taskgraph, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
 
     // Give the taskgraph a bit extra time to complete so we can shutdown the server before it starts.
