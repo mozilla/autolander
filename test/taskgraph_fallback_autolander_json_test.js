@@ -31,12 +31,12 @@ suite('taskgraph selection > ', function() {
   test('uses autolander.json if it exists', co(function * () {
     var taskgraphFailure = fs.readFileSync(__dirname + '/fixtures/tc_failure/taskgraph.json', 'utf-8');
     taskgraphFailure = jsTemplate(taskgraphFailure, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
 
     var taskgraphSuccess = fs.readFileSync(__dirname + '/fixtures/tc_success/autolander.json', 'utf-8');
     taskgraphSuccess = jsTemplate(taskgraphSuccess, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
 
     yield commitContent(runtime, 'master', 'taskgraph.json', taskgraphFailure);

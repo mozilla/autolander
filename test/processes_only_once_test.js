@@ -37,7 +37,7 @@ suite('processing duplicate bug notifications > ', function() {
     // Make a slow taskgraph, which will eventually pass.
     var taskgraphFirstSlow = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraphFirstSlow = jsTemplate(taskgraphFirstSlow, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
     taskgraphFirstSlow = JSON.parse(taskgraphFirstSlow);
     taskgraphFirstSlow.tasks[0].task.payload.command[2] = "sleep 10s && echo \"Hello World\";"

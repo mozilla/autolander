@@ -38,7 +38,7 @@ suite('fast forward coalesce > ', function() {
     // case and commenting is done in the case of a coalesce.
     var taskgraphFirstSlow = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraphFirstSlow = jsTemplate(taskgraphFirstSlow, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
     taskgraphFirstSlow = JSON.parse(taskgraphFirstSlow);
     taskgraphFirstSlow.tasks[0].task.payload.command[2] = "sleep 5m && echo \"Hello World\";"
@@ -46,7 +46,7 @@ suite('fast forward coalesce > ', function() {
 
     var taskgraphFastSuccess = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraphFastSuccess = jsTemplate(taskgraphFastSuccess, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
 
     yield commitContent(runtime, 'master', 'taskgraph.json', taskgraphFirstSlow);
@@ -74,7 +74,7 @@ suite('fast forward coalesce > ', function() {
     yield branchFromRef(runtime, 'branch3', 'branch2');
     var taskgraphFailure = fs.readFileSync(__dirname + '/fixtures/tc_failure/taskgraph.json', 'utf-8');
     taskgraphFailure = jsTemplate(taskgraphFailure, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
     yield commitContent(runtime, 'branch3', 'taskgraph.json', taskgraphFailure, 'Bug ' + bug3.id + ' - add failure taskgraph');
     yield createPullRequest(runtime, 'branch3', 'master', 'Bug ' + bug3.id + ' - Autolander failure, should not land');

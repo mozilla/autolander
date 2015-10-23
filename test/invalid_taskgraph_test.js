@@ -32,7 +32,7 @@ suite('invalid taskgraph > ', function() {
   test('comments on PR and removes autoland', co(function * () {
     var taskgraph = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraph = jsTemplate(taskgraph, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     }) + ' - Make this taskgraph invalid.';
 
     yield commitContent(runtime, 'master', 'taskgraph.json', taskgraph);

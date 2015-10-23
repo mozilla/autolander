@@ -33,7 +33,7 @@ suite('multiple commits in a pull request > ', function() {
   test('comments with the merge commit', co(function * () {
     var taskgraph = fs.readFileSync(__dirname + '/fixtures/tc_success/taskgraph.json', 'utf-8');
     taskgraph = jsTemplate(taskgraph, {
-      taskId: slugid.v4()
+      taskId: slugid.nice()
     });
 
     yield commitContent(runtime, 'master', 'temp', 'foo');
