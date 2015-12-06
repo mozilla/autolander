@@ -31,7 +31,7 @@ We don't yet have a UI in place to easily do this, so for the time being, Autola
 
 * Add the Autolander user (https://github.com/autolander/) to your repository with permissions.
 * Add the heroku webhook to your repository, and make sure it receives events for pull requests: http://autolander.herokuapp.com/github
-* Until bug 1094926 is finished, the BUGZILLA_SUPPORTED_PRODUCTS configuration value needs to be updated to contain your bugzilla product.
+* Until the security team determines that it's safe to enable autolander across all components, the BUGZILLA_SUPPORTED_PRODUCTS configuration value needs to be updated to contain your bugzilla product. The whitelist is to ensure that the component suggested reviewers have been audited as any suggested reviewer will be able to land code into the repository once autolander is enabled.
 
 ## Autolander Component Interaction
 
