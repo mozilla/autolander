@@ -13,11 +13,27 @@ Autolander is a tool which manages continuous integration workflows between Bugz
   * If we can not fast-forward the base branch, we re-create the integration branch from the base branch and replay all integrations on top of it.
 * Autolander will update the bug with the landing commit, and resolve the bug as fixed.
 
-Validations:
+## Validations:
 
 * Pull request titles - a bug number is required in the pull request title.
 * Commit messages - Each commit message in the pull request must have a bug number.
 * TBD: If we should require a r= in each commit message (we may be able to include this info in the future from the bug automatically).
+
+
+## Basic Repository Integration
+
+Autolander will check if you have either an `autolander.json` or a `taskgraph.json` in the project root in order to determine whether or not to run tests on treeherder. If you have neither of these then autolander will simply merge code to master when the `autoland` keyword is added.
+
+
+## Enabling Autolander for additional repositories
+
+We don't yet have a UI in place to easily do this, so for the time being, Autolander needs a few things in place to function:
+
+* Add the Autolander user (https://github.com/autolander/) to your repository with permissions.
+* Add the heroku webhook to your repository, and make sure it receives events for pull requests: http://autolander.herokuapp.com/github
+* Until bug 1094926 is finished, the BUGZILLA_SUPPORTED_PRODUCTS configuration value needs to be updated to contain your bugzilla product.
+
+## Autolander Component Interaction
 
 Autolander interacts between several components, some of which are:
 
@@ -28,6 +44,8 @@ Autolander interacts between several components, some of which are:
 * Azure - Stores the list of bugs that we are interested in.
 * Pulse/AMQP - Receives updates for bugs and taskgraph updates.
 
+
+# Development
 
 ## Configuration
 
@@ -83,11 +101,3 @@ DEBUG=* node --harmony ./bin/web production
 DEBUG=* node --harmony ./bin/worker production
 
 ```
-
-## Enabling Autolander for additional repositories
-
-We don't yet have a UI in place to easily do this, so for the time being, Autolander needs a few things in place to function:
-
-* Add the Autolander user (https://github.com/autolander/) to your repository with permissions.
-* Add the heroku webhook to your repository, and make sure it receives events for pull requests: http://autolander.herokuapp.com/github
-* Until bug 1094926 is finished, the BUGZILLA_SUPPORTED_PRODUCTS configuration value needs to be updated to contain your bugzilla product.
