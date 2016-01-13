@@ -1,4 +1,8 @@
-# Autolander
+Autolander
+==========
+[![Build Status](https://travis-ci.org/mozilla/autolander.svg?branch=master)](https://travis-ci.org/mozilla/autolander)
+
+## Description:
 
 Autolander is a tool which manages continuous integration workflows between Bugzilla and Github. Autolander has several features including:
 

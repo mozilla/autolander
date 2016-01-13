@@ -1,0 +1,12 @@
+sudo: requried
+dist: trusty
+language: node_js
+node_js:
+  - "4.2"
+install:
+  - npm install
+before_script:
+  - cp config/development.js.tpl config/development.js
+script:
+  - echo "skipping test run until environment variables are set up"
+  #- npm test
