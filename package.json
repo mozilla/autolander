@@ -1,19 +1,18 @@
 {
   "name": "autolander",
   "version": "0.0.0",
-  "description": "autolander ================",
-  "main": "index.js",
+  "description": "A tool that manages CI workflows between Bugzilla and Github",
   "scripts": {
     "test": "./test/runall.sh"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/KevinGrandon/autolander.git"
+    "url": "git://github.com/mozilla/autolander.git"
   },
   "author": "Kevin Grandon <kevingrandon@yahoo.com>",
   "license": "MPL",
   "bugs": {
-    "url": "https://github.com/KevinGrandon/autolander/issues"
+    "url": "https://github.com/mozilla/autolander/issues"
   },
   "engines" : {
     "node" : "0.11.14"
