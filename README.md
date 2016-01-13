@@ -1,6 +1,8 @@
 Autolander
 ==========
 [![Build Status](https://travis-ci.org/mozilla/autolander.svg?branch=master)](https://travis-ci.org/mozilla/autolander)
+[![Dependency Status](https://david-dm.org/mozilla/autolander.svg)](https://david-dm.org/mozilla/autolander)
+[![devDependency Status](https://david-dm.org/mozilla/autolander/dev-status.svg)](https://david-dm.org/mozilla/autolander#info=devDependencies)
 
 ## Description:
 
