@@ -58,7 +58,7 @@ module.exports = function(runtime) {
       return;
     }
 
-    params.treeherderUrl = runtime.config.treeherderConfig.baseUrl + 'ui/#/jobs?repo=gaia-try&revision=' + revisionInfo[0].revision;
+    params.treeherderUrl = runtime.config.treeherderConfig.baseUrl + '#/jobs?repo=gaia-try&revision=' + revisionInfo[0].revision;
 
     switch (detail.payload.status.state) {
       case 'running':
