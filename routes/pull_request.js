@@ -6,6 +6,22 @@ var thunkify = require('thunkify');
 
 module.exports = function(runtime) {
   return function * (detail) {
+    // Only actions that can introduce a bug number need to be handled. This
+    // also helps avoid race conditions in cases where multiple events are
+    // generated at the same time (for example when a PR has an assignee set
+    // at the time of creation, both "opened" and "assigned" events are sent).
+    // Possible actions are listed here:
+    // https://developer.github.com/v3/activity/events/types/#pullrequestevent
+    var relevantActions = {
+      opened: true,
+      edited: true,
+      synchronize: true
+    };
+
+    if (!relevantActions[detail.action]) {
+      debug('Skipping pull request event with action', detail.action);
+      return;
+    }
 
     if (!detail.repo || !detail.owner || !detail.number) {
       debug('Missing pull request info.');
