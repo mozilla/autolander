@@ -51,7 +51,9 @@ module.exports = function(runtime) {
 
     // Validate that we have a bug number formatted to: "Bug xxxx - "
     // For now allow preceding characters to allow for reverts.
-    var bugId = yield validator.pullRequestHasBug(runtime, pull);
+    // Only adds a warning message to new PRs, to stop comment spam.
+    var addComment = (detail.action === "opened")
+    var bugId = yield validator.pullRequestHasBug(runtime, pull, addComment);
     if (!bugId) {
       return;
     }
