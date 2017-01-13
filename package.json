@@ -34,7 +34,7 @@
     "koa": "0.11.0",
     "koa-body-parser": "^1.0.0",
     "koa-trie-router": "^1.0.8",
-    "mozilla-treeherder": "^0.4.2",
+    "mozilla-treeherder": "^0.7.0",
     "ngrok": "^0.1.98",
     "promise": "~4.0.0",
     "slugid": "^1.1.0",
